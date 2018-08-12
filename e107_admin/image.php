@@ -276,7 +276,7 @@ class media_cat_ui extends e_admin_ui
 
 
 	
-	public function beforeCreate($new_data)
+	public function beforeCreate($new_data, $old_data)
 	{
 		// XXX temporary disable when there is no owners, discuss
 		if(!$new_data['media_cat_owner'])
@@ -931,66 +931,6 @@ class media_admin_ui extends e_admin_ui
 	);
 	
 
-	
-
-	/*
-
-	<tr>
-								<td>
-									".IMALAN_1."
-								</td>
-								<td>
-									<div class='auto-toggle-area autocheck'>
-										".$frm->checkbox('image_post', 1, $pref['image_post'])."
-										<div class='field-help'>".IMALAN_2."</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									".IMALAN_10."
-								</td>
-								<td>
-									".r_userclass('image_post_class',$pref['image_post_class'],"off","public,guest,nobody,member,admin,main,classes")."
-									<div class='field-help'>".IMALAN_11."</div>
-								</td>
-							</tr>
-	
-							<tr>
-								<td>
-									".IMALAN_12."
-								</td>
-								<td>
-									".$frm->select_open('image_post_disabled_method')."
-										".$frm->option(IMALAN_14, '0', ($pref['image_post_disabled_method'] == "0"))."
-										".$frm->option(IMALAN_15, '1', ($pref['image_post_disabled_method'] == "1"))."
-									".$frm->select_close()."
-									<div class='field-help'>".IMALAN_13."</div>
-								</td>
-							</tr>";
-							
-							list($img_import_w,$img_import_h) = explode("x",$pref['img_import_resize']);
-
-							$text .= "						
-							<tr>
-								<td>".IMALAN_105."<div class='label-note'>".IMALAN_106."</div></td>
-								<td>
-									".$frm->text('img_import_resize_w', $img_import_w,4)."px X ".$frm->text('img_import_resize_h', $img_import_h,4)."px
-								</td>
-							</tr>
-	
-							<tr>
-								<td>".IMALAN_3."<div class='label-note'>".IMALAN_54." {$gd_version}</div></td>
-								<td>
-									".$frm->select_open('resize_method')."
-										".$frm->option('gd1', 'gd1', ($pref['resize_method'] == "gd1"))."
-										".$frm->option('gd2', 'gd2', ($pref['resize_method'] == "gd2"))."
-										".$frm->option('ImageMagick', 'ImageMagick', ($pref['resize_method'] == "ImageMagick"))."
-									".$frm->select_close()."
-									<div class='field-help'>".IMALAN_4."</div>
-								</td>
-							</tr>";
-	*/
 	protected $cats = array();
 	protected $owner = array();
 	protected $ownercats = array();
@@ -1071,16 +1011,58 @@ class media_admin_ui extends e_admin_ui
 		e107::getCache()->clearAll('image');
 		
 	//	print_a($_GET);
+		if(e_AJAX_REQUEST)
+		{
+			$parm = array('search' => $tp->filter($_GET['search']));
 
+			switch($this->getAction())
+			{
+				case "youtube":
+					echo $this->youtubeTab($parm);
+					break;
 
+				case "glyph":
+					echo $this->glyphTab($parm);
+					break;
 
+				case "icon":
+					echo $this->iconTab($parm);
+					break;
 
+				case "image2":
+					$cat = $tp->filter($_GET['for']);
+					echo $this->imageTab2($cat,$parm);
+					break;
 
-		
+				case "video":
+					$cat = $tp->filter($_GET['for']);
+					echo $this->videoTab($cat, $parm);
+				break;
+
+				case "audio":
+					$cat = $tp->filter($_GET['for']);
+					echo $this->audioTab($cat, $parm);
+				break;
+
+				default:
+					// code to be executed if n is different from all labels;
+			}
+
+			exit;
+		}
+
+/*
 		if($this->getAction() === 'youtube')
 		{
-			$parm = array('search' => $tp->filter($_GET['search']));	
+
 			echo $this->youtubeTab($parm);
+			exit;
+		}
+
+			if($this->getAction() === 'glyph')
+		{
+			$parm = array('search' => $tp->filter($_GET['search']));
+			echo $this->glyphTab($parm);
 			exit;
 		}
 		
@@ -1115,7 +1097,7 @@ class media_admin_ui extends e_admin_ui
 			echo $this->imageTab2($cat,$parm);
 			exit;
 		}
-		
+	*/
 		if($this->getAction() == 'nav' )
 		{
 			//echo $this->navPage();\
@@ -1392,19 +1374,17 @@ class media_admin_ui extends e_admin_ui
 		$cat = $this->getQuery('for');
 
 		$tabOptions = array(
-			'core-media-icons'   => array('caption'=> $tp->toGlyph('fa-file-photo-o').IMALAN_72,    'method' => 'iconTab' ),
+			'core-media-icon'   => array('caption'=> $tp->toGlyph('fa-file-photo-o').IMALAN_72,    'method' => 'iconTab' ),
 			'core-media-image'   => array('caption'=> $tp->toGlyph('fa-file-photo-o').ADLAN_105,    'method' => 'imageTab2' ),
 			'core-media-video'   => array('caption'=> $tp->toGlyph('fa-file-video-o').IMALAN_163,   'method' => 'videoTab'),
 			'core-media-audio'   => array('caption'=> $tp->toGlyph('fa-file-audio-o')."Audio",      'method' => 'audioTab'),
 			'core-media-youtube' => array('caption'=> $tp->toGlyph('fa-youtube-play')."Youtube",    'method' => 'youtubeTab' ),
-			'core-media-glyphs'   => array('caption'=> $tp->toGlyph('fa-flag')."Glyphs",             'method' => 'glyphTab'),
+			'core-media-glyph'   => array('caption'=> $tp->toGlyph('fa-flag')."Glyphs",             'method' => 'glyphTab'),
 		);
 
 		if(!empty($options['bbcode']))
 		{
 			$tabOptions['core-media-img'] = $tabOptions['core-media-image'];
-			$tabOptions['core-media-glyph'] = $tabOptions['core-media-glyphs'];
-
 		}
 
 		$tabs = array();
@@ -1486,7 +1466,7 @@ class media_admin_ui extends e_admin_ui
 		}
 		else
 		{
-			if($this->getQuery('bbcode') == 'glyphs')
+			if($this->getQuery('bbcode') == 'glyph')
 			{
 				$glyphActive = 'active';	
 			}
@@ -1511,7 +1491,7 @@ class media_admin_ui extends e_admin_ui
 		}
 
 
-		if($this->getQuery('glyphs') == 1 || $this->getQuery('bbcode') == 'glyph')
+		if($this->getQuery('glyph') == 1 || $this->getQuery('bbcode') == 'glyph')
 		{
 			$text .= "<li class='{$glyphActive}'><a data-toggle='tab' href='#core-media-glyphs'>"."Glyphs</a></li>\n";
 		}
@@ -1583,15 +1563,15 @@ class media_admin_ui extends e_admin_ui
 
 		}
 			
-
+/*
 		if($this->getQuery('audio') || $this->getQuery('bbcode') == 'audio')
 		{
 				$text .= "<div class='tab-pane clearfix {$videoActive}' id='core-media-audio' >";
 				$text .= $this->audioTab();
 				$text .= "</div>";
-		}
+		}*/
 
-		if($this->getQuery('glyphs') == 1 || $this->getQuery('bbcode') == 'glyph')
+		if($this->getQuery('glyph') == 1 || $this->getQuery('bbcode') == 'glyph')
 		{
 			$text .= "<div class='tab-pane clearfix {$glyphActive}' id='core-media-glyphs'>";
 			$text .= $this->glyphTab();
@@ -1749,7 +1729,7 @@ class media_admin_ui extends e_admin_ui
 	}
 
 
-	private function iconTab($category='',$option=array())
+	private function iconTab($option=array())
 	{
 			$tp = e107::getParser();
 
@@ -1759,7 +1739,7 @@ class media_admin_ui extends e_admin_ui
 			'type'		=>'icon', // how should it be rendered?
 			'category'  => $category,
 			'tagid'		=> $this->getQuery('tagid'),
-			'action'	=>'icons', 	// Used by AJAX to identify correct function.
+			'action'	=>'icon', 	// Used by AJAX to identify correct function.
 			'perPage'	=> 80,
 			'gridClass'	=> 'media-carousel-item-glyph pull-left',
 			'bbcode'	=> 'image',
@@ -1823,7 +1803,7 @@ class media_admin_ui extends e_admin_ui
 		$tp = e107::getParser();
 
 		$parms = array(
-			'width'	 	=> 340,
+			'width'	 	=> 340, // when inserting into wysiwyg
 			'height'	=> 220,
 			'type'		=>'image',
 			'category'  => $category,
@@ -1832,9 +1812,19 @@ class media_admin_ui extends e_admin_ui
 			'perPage'	=> 8,
 			'gridClass'	=> 'col-sm-3 media-carousel-item-image',
 			'bbcode'	=> 'img', // bbcode tag.
-			'close'		=> 'true'
-
 		);
+
+		$close = true;
+
+		if(!empty($option['bbcode']))
+		{
+			$close = false;
+			e107::getBB()->setClass($category);
+			$parms['width'] = (int) e107::getBB()->resizeWidth(); // resize the image according to prefs.
+			$parms['height'] = (int) e107::getBB()->resizeHeight();
+			e107::getBB()->clearclass();
+		}
+
 
 		$items = array();
 
@@ -1855,14 +1845,15 @@ class media_admin_ui extends e_admin_ui
 		{
 			$items[] = array(
 					'previewHtml'	=> $tp->toImage($val['media_url'], array('w'=>210, 'h'=>140)),
-				//	'previewUrl'    => $tp->thumbUrl($val['media_url'], array('w'=>210, 'h'=>140)),
+					'previewUrl'    => $tp->thumbUrl($val['media_url'], array('w'=>210, 'h'=>140)),
 					'saveValue'		=> $val['media_url'],
 					'thumbUrl'		=> $tp->thumbUrl($val['media_url'], array('w'=>340, 'h'=>220)),
 					'title'			=> $val['media_name'],
 					'tooltip'       => basename($val['media_url'])." (".$val['media_dimensions'].")",
 					'slideCaption'	=> '',
 					'slideCategory'	=> 'bootstrap',
-					'mime'          => $val['media_type']
+					'mime'          => $val['media_type'],
+					'close'         => $close
 			);
 
 		}
@@ -2701,6 +2692,7 @@ class media_admin_ui extends e_admin_ui
 			$text .= "<div  id='core-image-show-avatars' class='row'>";
 
 			$count = 0;
+			$prevType  = '';
 			while (list($key, $image_name) = each($dirlist))
 			{
 				//$users = IMALAN_21." | ";
@@ -2820,18 +2812,12 @@ class media_admin_ui extends e_admin_ui
 		// $ns->tablerender(LAN_MEDIAMANAGER." :: ".IMALAN_18, $mes->render().$text);
 	}
 
-	function iconsTab()
-	{
-		// $this->icon_editor();
-	}
-
-
 
 	/**
 	 * Invoked just before item create event
 	 * @return array
 	 */
-	public function beforeCreate($new_data)
+	public function beforeCreate($new_data, $old_data)
 	{
 		// print_a($_POST);
 		// return data to be merged with posted model data
@@ -3007,7 +2993,7 @@ class media_admin_ui extends e_admin_ui
 		return true;
 	}
 
-	function afterDelete($deleted_data, $id) // call after 'delete' is successfully executed. - delete the file with the db record (optional pref)
+	function afterDelete($deleted_data, $id, $deleted_check) // call after 'delete' is successfully executed. - delete the file with the db record (optional pref)
 	{
 
 		if(!empty($deleted_data['media_url']))
@@ -3524,20 +3510,6 @@ e107::getAdminUI()->runPage();
 $action = e_QUERY;
 
 
-if(varset($_GET['action']) == "icons")
-{
-	// icon_editor();
-}
-
-if(varset($_GET['action']) == "avatars")
-{
-	// show_avatars();
-}
-
-if(varset($_GET['action']) == 'settings')
-{
-	// main_config();
-}
 /*
  * DELETE CHECKED AVATARS - SHOW AVATAR SCREEN
  */
