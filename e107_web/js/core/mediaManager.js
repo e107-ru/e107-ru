@@ -46,8 +46,9 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 				});
 			});
 */
-            $(context).on('click', '.e-media-select', function ()
+            $(context).on('click', '.e-media-select', function (e)
             {
+            	e.preventDefault();
                 e107.mediaManager.eMediaSelect(this);
             });
 
@@ -304,6 +305,9 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 	 */
 	e107.mediaManager.eMediaSelect = function (that)
 	{
+
+
+
 		var $this = $(that);
 		// ID of the Media Manager Item.
 		var id = $this.attr('data-id');
@@ -334,12 +338,17 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 
 
 
+
 		// Remove "selected" class from elements.
 		$('.e-media-select').removeClass('media-select-active');
 
 		// Add "selected" class to clicked element.
 		$this.addClass('media-select-active');
 		$this.closest('img').addClass('active');
+
+
+
+		
 
 		if(bbcode === "file" && $bbcodeHolder.length > 0) // not needed for Tinymce
 		{
@@ -348,10 +357,12 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 			return;
 		}
 
-		if(bbcode === "video" && $bbcodeHolder.length > 0)
+		if((bbcode === "video" || bbcode === "img") && $bbcodeHolder.length > 0)
 		{
+			e107.mediaManager.eMediaAttribute($this, bbcode);
 			bbpath = '[' + bbcode + ']' + path + '[/' + bbcode + ']';
 			$bbcodeHolder.val(bbpath);
+
 		}
 
 		if(bbcode === "glyph" && $bbcodeHolder.length > 0)
@@ -439,7 +450,7 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 			console.log("Mode: Image");
 		}
 
-
+		console.log("Bbpath: " + bbpath);
 		console.log("Preview: "+preview);
 		console.log("Save Path: "+path);
 
@@ -676,10 +687,10 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 
 			// Specify what files to browse for
 			filters: [
-				{title: "Image files", extensions: extImg || "jpg,gif,png,jpeg"},
+				{title: "Image files", extensions: extImg || "jpg,gif,png,jpeg,svg"},
 				{title: "Zip files", extensions: extArchive || "zip,gz,rar"},
 				{title: "Document files", extensions: extDoc || "pdf,doc,docx,xls,xlsm,xml"},
-				{title: "Media files", extensions: 'mp3,mp4,wav,ogg,webm,mid,midi,'},
+				{title: "Media files", extensions: 'mp3,mp4,wav,ogg,webm,mid,midi'},
 				{title: "Other files", extensions: 'torrent,txt'}
 			],
 			preinit: {
@@ -693,9 +704,20 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 				{
 
 				},
-				FileUploaded: function (up, file, info)
+				FileUploaded: function (up, file, info) // Called when a file has finished uploading
 				{
-					// Called when a file has finished uploading
+				//	console.log(up);
+				//	console.log(file);
+				//	console.log(file);
+					var result = JSON.parse(info.response);
+					if(result.error)
+					{
+						alert(file.name + ': '+ result.error.message);
+					//	$('.plupload_buttons').show();
+						return false;
+					}
+				//	console.log(result);
+
 				},
 				UploadProgress: function (up, file)
 				{
