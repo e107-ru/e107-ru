@@ -138,6 +138,11 @@
 
 			$fieldType = $this->_config[$key]['type'];
 
+			if($value === null)
+			{
+				return null;
+			}
+
 			switch($fieldType)
 			{
 				case "dropdown":
@@ -147,6 +152,12 @@
 				break;
 
 				case "video":
+
+					if(empty($value))
+					{
+						return null;
+					}
+
 					return ($raw) ? 'https://www.youtube.com/watch?v='.str_replace(".youtube", '', $value) : $tp->toVideo($value);
 				break;
 
@@ -178,6 +189,10 @@
 					break;
 
 				case "file":
+					if(empty($value))
+					{
+						return null; 
+					}
 					return ($raw) ? $tp->toFile($value, array('raw'=>1)) : $tp->toFile($value);
 					break;
 
@@ -195,7 +210,12 @@
 					break;
 
 				case "progressbar":
-					return ($raw) ? $value.'%' : e107::getForm()->progressBar($key,$value,$this->_config[$key]);
+					if($raw)
+					{
+						return (strpos($value, '/') === false) ? $value.'%' : $value;
+					}
+
+					return e107::getForm()->progressBar($key,$value,$this->_config[$key]);
 					break;
 
 				case "textarea":
@@ -203,6 +223,29 @@
 					return $tp->toHtml($value, true);
 					break;
 
+
+				case "boolean":
+					if($raw)
+					{
+						return $value;
+					}
+
+					return empty($value) ? $tp->toGlyph('fa-times') : $tp->toGlyph('fa-check');
+					break;
+
+				case "checkbox":
+					if($raw)
+					{
+						return $value;
+					}
+
+					if(is_numeric($value))
+					{
+						return empty($value) ? $tp->toGlyph('fa-times') : $tp->toGlyph('fa-check');
+					}
+
+					return $value;
+					break;
 
 				default:
 					return $tp->toHtml($value);
