@@ -4,9 +4,9 @@
 |        e107 website content management system Russian Language File
 |        Released under the terms and conditions of the
 |        GNU General Public License (http://gnu.org).
-|        Last Modified: 2016/07/30 02:21:21
+|        Last Modified: 2018/08/15 23:15:20
 |
-|        $Author: admin $
+|        $Author: net1313 https://e107-ru.com $
 +---------------------------------------------------------------+
 */
 define("LANDT_01", "год");
@@ -28,6 +28,6 @@ define("LANDT_08s", "мин.");
 define("LANDT_09", "сек.");
 define("LANDT_09s", "сек.");
 define("LANDT_AGO", "назад");
-define("LANDT_10", "Сейчас");
+define("LANDT_10", "Только что");
 
 ?>
