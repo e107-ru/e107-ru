@@ -26,8 +26,7 @@ e107 - бесплатная CMS, с открытым исходным кодом
 ----
 ### Минимальные системные требования
 Оперцаионная система на базе любого дистрибутива Linux
-Сервер: Apache 2.x, или Nginx 1.x, поддержка PHP 7.x ![PHP version from PHP-Eye](https://img.shields.io/php-eye/symfony/symfony.svg)
-
+Сервер: Apache 2.x, или Nginx 1.x, поддержка PHP 7.x 
 Оперативная память (RAM): 2 ГБ
 База данных: MySQL 5.x, MariaDB 10.x
 
