@@ -212,6 +212,9 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 			$htmlHolder.val($img.prop('outerHTML'));
 		}
 
+		// prevent empty tags
+		if (path == '') return;
+
 		// Only Do width/height styling on bbcodes --
 		if(width != '' && width !== undefined)
 		{
@@ -240,7 +243,7 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 			bb = bb + ']';
 			bb = bb + path;
 			bb = bb + '[/img]';
-
+/*
 			if(target && target.charAt(0) != "#" && target.charAt(0) != ".")
 			{
 				target = "#" + target;
@@ -268,6 +271,13 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 					}
 				}
 			}
+*/
+            // above code did directly write the tag to the target, without having clicked on "Save"
+            if($bbcodeHolder.length > 0)
+            {
+                $bbcodeHolder.val(bb); // Set the BBcode Value.
+            }
+
 		}
 	};
 
@@ -509,6 +519,7 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 		$this.closest('img').addClass('active');
 
 
+console.log('Bbcode: '+bbcode);
 
 		
 
@@ -562,20 +573,7 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 		$('img#' + target + "_prev", window.top.document).attr('src', preview); // set new value
 
 
-		if(previewHTML) // mediapicker() method. New in v2.1.9
-		{
-			console.log("Mode: MediaPicker");
-			console.log("Preview Raw: "+previewHTML);
-
-			if($htmlHolder.length > 0)
-			{
-				$htmlHolder.val(previewHTML);
-			}
-
-			preview = atob(previewHTML).trim();
-			e107.mediaManager.eMediaAttribute($this, bbcode);
-		}
-		else if(type === 'glyph')
+		if(type === 'glyph')
 		{
 			preview = "<span class='" + src + "'>&nbsp;</span>";
 
@@ -666,10 +664,17 @@ var e107 = e107 || {'settings': {}, 'behaviors': {}};
 		var bbcode = $this.attr('data-bbcode'); // TinyMce/Textarea insert mode
 		var close = $this.attr('data-close');
 
+
+
 		if(!target || !bbcode)
 		{
+			console.log('eDialogSave: no target or bbcode');
+			console.log('eDialogSave (bbcode): ' + bbcode);
+			console.log('eDialogSave (target): ' + target);
 			return true;
 		}
+
+
 
 		var $target = $('#' + target, window.top.document);
 
