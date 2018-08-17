@@ -50,7 +50,8 @@ $ chown -R xxx:xxx public_html
 ```
 - В адресной строке браузера http://имя_хоста_или_IP_или_localhost/ВАШ_КАТАЛОГ_е107/install.php 
 - Следовать инструкциям инсталлятора
+
 ----
 
-### Авторские права
+### Открытое лицензионное соглашение
 GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
