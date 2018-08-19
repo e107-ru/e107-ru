@@ -155,9 +155,12 @@ $sc_style['CPAGENAV|default']['post'] = '</div>';
 	// Override the wrapper above for {CPAGEFIELD: name=myvideo}
 	$PAGE_WRAPPER['customfields']['CPAGEFIELD: name=myvideo'] = "<tr><td colspan='2'>{---}</td></tr>";
 
+	// Make image clickable for the display of a larger image in a modal window.
+	$PAGE_WRAPPER['customfields']['CPAGEFIELD: name=myimage'] = "<td><a class='e-modal' data-modal-caption='{CPAGEFIELDTITLE: name=myimage}' target='_blank' href='{CPAGEFIELD: name=myimage&mode=raw&w=800}'>{---}</a></td></tr>";
+
 	$PAGE_TEMPLATE['customfields']['body'] = ' 
  	
- 		<div class="col-xs-12 col-md-5 pull-right" style="margin-right:-15px">
+ 		<div id="custom-fields-example" class="col-xs-12 col-md-5 pull-right" style="margin-right:-15px">
  		<table class="table table-striped table-bordered">
  			<tr>
  				<th class="text-center" colspan="2">Custom Fields</th>
@@ -181,6 +184,7 @@ $sc_style['CPAGENAV|default']['post'] = '</div>';
 			{CPAGEFIELD: name=myfile}
 			{CPAGEFIELDTITLE: name=myicon}
 			{CPAGEFIELD: name=myicon}
+			{SETIMAGE: w=200} <!-- Set the default image size -->
 			{CPAGEFIELDTITLE: name=myimage}
 			{CPAGEFIELD: name=myimage}
 			{CPAGEFIELDTITLE: name=mylanguage}
