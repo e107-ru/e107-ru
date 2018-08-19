@@ -38,7 +38,7 @@ define("LAN_FORUM_NT_TOPIC_UPDATED_MSG", "Тема [thread] (в форуме: [f
 define("LAN_FORUM_NT_TOPIC_DELETED_MSG", "Тема [thread] в форуме [forum] удалена: [user]");
 define("LAN_FORUM_NT_TOPIC_MOVED_MSG", "Тема [thread] перемещена из [forum] в [forum2] юзером: [user]");
 
-define("LAN_FORUM_NT_POST_CREATED_MSG", "New message in thread [thread] (Forum name: [forum]) created by: [user]\nMessage:\n[post]");
-define("LAN_FORUM_NT_POST_UPDATED_MSG", "Message in thread [thread] (Forum name: [forum]) updated by: [user]\nMessage:\n[post]");
-define("LAN_FORUM_NT_POST_DELETED_MSG", "Message #[postid] of thread [thread] in forum [forum] deleted by: [user]\n\nMessage:\n[post]");
+define("LAN_FORUM_NT_POST_CREATED_MSG", "Новый пост в теме [thread] (Форума: [forum]) автор: [user]\nПост:\n[post]");
+define("LAN_FORUM_NT_POST_UPDATED_MSG", "Пост в теме [thread] (Форума: [forum]) обновлен: [user]\nПост:\n[post]");
+define("LAN_FORUM_NT_POST_DELETED_MSG", "Пост #[postid] темы [thread] в форуме [forum] удален: [user]\n\nПост:\n[post]");
 ?>

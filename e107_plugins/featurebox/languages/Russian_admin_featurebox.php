@@ -34,4 +34,10 @@ define("FBLAN_31", "Случайный");
 define("FBLAN_32", "Параметры (необязательно)");
 define("FBLAN_33", "Необязательные параметры Javascript (возможны изменения)");
 
+// Install/uninstall messages
+
+define("FBLAN_34", "Не определено");
+define("FBLAN_35", "Carousel");
+define("FBLAN_36", "Вкладки");
+
 ?>
