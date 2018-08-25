@@ -598,10 +598,10 @@
 							return LAN_PM_17;
 						}
 
-						if(e107::getDb()->update('private_msg_block', "pm_block_count=pm_block_count+1 WHERE pm_block_from = '" . USERID . "' AND pm_block_to = '{$to_info['user_id']}'"))
+					/*	if(e107::getDb()->update('private_msg_block', "pm_block_count=pm_block_count+1 WHERE pm_block_from = '" . USERID . "' AND pm_block_to = '{$to_info['user_id']}'"))
 						{
 							return LAN_PM_18 . $to_info['user_name'];
-						}
+						}*/
 					}
 				}
 

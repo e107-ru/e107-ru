@@ -160,7 +160,7 @@ define("ADLAN_189", "Следующие плагины не совместимы
 define("ADLAN_190", "Нужна помощь?");
 define("ADLAN_190", "Нужна помощь?");
 define("ADLAN_191", "Обращайтесь к нашему сообществу [бесплатная поддержка] для решения проблем с обновлением, если такое случится.");
-define("ADLAN_192", "Обращайтесь к нашему сообществу [бесплатная поддержка] если возникнут проблемы с e107.");
+define("ADLAN_192", "Обращайтесь к нашему сообществу [бесплатная поддержка] если возникнут проблемы системы e107.");
 define("ADLAN_193", "Нет необходимых прав на запись в каталог [x]. Исправте перед тем как начать.");
 define("ADLAN_194", "Обнаружен каталог аватаров. Убедитесь, что на [x]avatars/ выставленны права на запись. Исправте перед тем как начать.");
 define("ADLAN_195", "Старый каталог перемещен в резервную папку");
@@ -259,7 +259,7 @@ define("LAN_ORDER", "Последовательность");
 define("LAN_ASC", "ПО ВОЗРАСТАНИЮ");
 define("LAN_DESC", "ПО УБЫВАНИЮ");
 
-define("LAN_SELECT", "Выбрать...");
+define("LAN_SELECT", "Выбор...");
 define("LAN_ADMIN", "Администратор");
 define("LAN_ROOT", "Root");
 define("LAN_LINE", "Строка");
@@ -355,7 +355,7 @@ define("LAN_LOADING", "Загрузка...");
 
 define("LAN_RUN", "Начать");
 define("LAN_SEFURL", "ЧПУ (sef-url)");
-define("LAN_COPY", "Копия");
+define("LAN_COPY", "Скопировать");
 define("LAN_KEYWORDS", "Ключевые слова");
 
 define("LAN_TEMPLATE", "Шаблон");
@@ -380,7 +380,7 @@ define("LAN_SECURITYL_7", "Высокий");
 define("LAN_SECURITYL_9", "Параноик");
 define("LAN_SECURITYL_10", "Безумный");
 
-define("LAN_BATCH_LABEL_SELECTED", "Выбрать...");
+define("LAN_BATCH_LABEL_SELECTED", "Отмеченное...");
 define("LAN_BATCH_LABEL_PREFIX", "Изменить");
 define("LAN_LABEL_LABEL_SELECTED", "Фильтр");
 define("LAN_FILTER_LABEL_PREFIX", "Фильтр -");
@@ -408,7 +408,7 @@ define("LAN_UI_EDIT_LABEL", "Обновление записи #[x]");
 define("LAN_UI_CREATE_LABEL", "Создать новую запись");
 define("LAN_UI_PREF_LABEL", "Параметры");
 define("LAN_UI_DELETE_LABEL", "Подтверждение удаления");
-define("LAN_UI_DELETE_WARNING", "Вы собираетесь удалить [x] запись. Пожалуйста, подтвердите удаление.");
+define("LAN_UI_DELETE_WARNING", "Вы собираетесь удалить [x] из количества записей. Пожалуйста, подтвердите удаление.");
 define("LAN_UI_BATCH_CREATELINK", "Создать ссылку");
 define("LAN_UI_DELETED", "[x] записи успешно удалены!");
 define("LAN_UI_DELETED_FAILED", "[x] записи не найдены и не удаляются!");
@@ -493,5 +493,6 @@ define("LAN_RECALCULATE_COMMENT_COUNT", "Пересчитать количест
 define("LAN_SUCC_RECALCULATE_COMMENT_COUNT", "Комментарии успешно пересчитаны!");
 define("LAN_NO_RESULTS_FOUND", "Результатов не найдено");
 
+define("LAN_UI_DROPZONE_DROP_FILES", "Для загрузки перетащите файлы сюда");
 
 ?>
