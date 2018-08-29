@@ -1,6 +1,4 @@
 <?php
-
-<?php
 /*
 * Copyright (c) e107 Inc 2008-2013 - e107.org, 
 * Licensed under GNU GPL (http://www.gnu.org/licenses/gpl.txt)
@@ -53,3 +51,5 @@ define("LANA_FAQ_CRON_3", "[x] Вопросы без ответов [y]");
 define("LANA_FAQ_CRON_4", "Войдите на сайт, для просмотра и ответов на эти вопросы, используя ссылку ниже.");
 define("LANA_FAQ_CRON_5", "Отображено [x] последних вопросов.");
 define("LANA_FAQ_CRON_6", "[x] Вопросов без ответов по состоянию на [y].");
+
+?>
