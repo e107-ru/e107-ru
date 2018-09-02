@@ -4,9 +4,9 @@
 |     e107 website system - Language File.
 |
 |     $Source: /cvs_backup/e107_0.8/e107_plugins/forum/languages/English/lan_forum_admin.php,v $
-|     $Revision$
-|     $Date$
-|     $Author$
+|     $Revision$ 2.1
+|     $Date$     2018/09/01  22:45:05
+|     $Author$ net1313 https://e107-ru.com
 +----------------------------------------------------------------------------+
 */
 //define("FORLAN_1", "You must enter the number of days you wish to prune.");
@@ -168,6 +168,6 @@ define("FORLAN_219", "Редактор форматированного текс
 define("FORLAN_220", "Редактор сообщений");
 define("FORLAN_221", "Выбор редактора для создания/редактирования сообщений");
 define("FORLAN_222", "Редактор быстрого ответа");
-
+define("FORLAN_223", "Используйте только обычный текст (без bbcode или html!)")
 
 ?>

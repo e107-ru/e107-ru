@@ -6,7 +6,7 @@
 |        GNU General Public License (http://gnu.org).
 |        Last Modified: 2018/01/02 01:12:38
 |
-|        $Author: net1313 $
+|        $Author: net1313 $https://e107-ru.com
 +---------------------------------------------------------------+
 */
 define("ADLAN_0", "Новости");
@@ -251,7 +251,7 @@ define("LAN_PLUGIN_FOLDER", "Каталог плагинов");
 define("LAN_THEMES", "Темы");
 define("LAN_THEME", "Тема");
 define("LAN_CORE", "Ядро");
-define("LAN_LATEST_e107_NEWS", "Последние Новости Е107");
+define("LAN_LATEST_e107_NEWS", "Новости официального сайта е107");
 define("LAN_WEBSITE_STATUS", "Статистика сайта");
 define("LAN_STATS", "Статистика");
 define("LAN_ONLINE", "Онлайн");

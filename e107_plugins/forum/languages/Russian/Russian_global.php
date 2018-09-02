@@ -2,7 +2,7 @@
 
 define("LAN_PLUGIN_FORUM_NAME", "Форум");
 define("LAN_PLUGIN_FORUM_DESC", "Плагин является полнофункциональной системой форума.");
-define("LAN_PLUGIN_FORUM_POSTS", "Посты форума");
+define("LAN_PLUGIN_FORUM_POSTS", "Сообщений форума");
 define("LAN_PLUGIN_FORUM_ALLFORUMS", "Все Форумы");
 define("LAN_PLUGIN_FORUM_LATESTPOSTS", "Последние сообщения");
 
