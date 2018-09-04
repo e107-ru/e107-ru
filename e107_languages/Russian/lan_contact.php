@@ -32,9 +32,9 @@ define("LANCONTACT_17", "Введите ваше имя");
 define("LANCONTACT_18", "Введите свой адрес эл. почты");
 define("LANCONTACT_19", "Введите тему сообщения");
 define("LANCONTACT_20", "Введите текст сообщения");
-define("LANCONTACT_21", "Используя эту форму, вы соглашаетесь на обработку персональных данных."); //   By using this form, you agree to the storage and processing of your data through this site.");
-define("LANCONTACT_22", "Политика обработки персональных данных");
-define("LANCONTACT_23", "Ознакомиться с политикой конфиденциальности: [x]");
+define("LANCONTACT_21", "Я согласен(а) на обработку персональных данных"); //   By using this form, you agree to the storage and processing of your data through this site.");
+define("LANCONTACT_22", "Политикой обработки персональных данных");
+define("LANCONTACT_23", "Ознакомиться с: [x]");
 define("LANCONTACT_24", "Соглашение о защите персональных данных");
 
 ?>
