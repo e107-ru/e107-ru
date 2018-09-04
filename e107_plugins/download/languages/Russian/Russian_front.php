@@ -10,12 +10,12 @@ define("LAN_dl_1", "(Ограничено)");
 define("LAN_dl_4", "Доступно файлов: ");
 define("LAN_dl_5", "Общий размер доступных файлов: ");
 define("LAN_dl_6", "Скачано файлов: ");
-define("LAN_dl_8", "Получить");
+define("LAN_dl_8", "Скачать");
 define("LAN_dl_9", "Вернуться к списку категорий");
 define("LAN_dl_13", "Без рейтинга");
 define("LAN_dl_14", "Оценить загрузку");
 define("LAN_dl_16", "скачиваний с");
-define("LAN_dl_29", "Скачиваний");
+define("LAN_dl_29", "Скачали");
 define("LAN_dl_30", "Email автора");
 define("LAN_dl_31", "Сайт автора");
 define("LAN_dl_36", "Новые загрузки");
@@ -45,7 +45,7 @@ define("LAN_dl_72", "Запрашиваемый файл: ");
 define("LAN_dl_73", "Загрузки с этого зеркала: ");
 define("LAN_dl_74", "Всего загрузок с этого зеркала: ");
 define("LAN_dl_75", "изображение отсутствует ");
-define("LAN_dl_77", "Скачиваний");		// Intentional duplicate - some languages need it to be different. This is for number of downloads
+define("LAN_dl_77", "Скачали");		// Intentional duplicate - some languages need it to be different. This is for number of downloads
 define('LAN_dl_78', "Скачивание отключено или прервано. Пожалуйста, проверьте в рaзделе [зaгрузки] на наличиее более свежей версии.");
 
 ?>
