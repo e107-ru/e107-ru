@@ -1,3 +1,4 @@
+
 body						{ padding-top: 75px; font-size: 14px;  }
 body#admin-admin .popover   { position: fixed }
 
@@ -186,6 +187,11 @@ table  label.checkbox                   { margin-left: 20px }
 
 .form-control-feedback-left              { left:0; top:0 }
 .has-feedback-left input                { padding-left:30px; }
+
+.form-control[disabled], .form-control[readonly] {
+    background-color: transparent;
+    box-shadow: none;
+}
 
 td .file.well                              { margin-bottom:0 }
 

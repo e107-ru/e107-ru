@@ -4,9 +4,9 @@
 |        e107 website content management system Russian Language File
 |        Released under the terms and conditions of the
 |        GNU General Public License (http://gnu.org).
-|        Last Modified: 2017/12/25 18:45:34
+|        Last Modified: 2018/09/06 22:08:30
 |
-|        $Author: net1313 $
+|        $Author: net1313 $ https://e107-ru.com
 +---------------------------------------------------------------+
 */
 define("LAN_USER_01", "Отображаемое имя");
@@ -33,7 +33,7 @@ define("LAN_USER_24", "Смена пароля");
 define("LAN_USER_31", "Главный администратор");
 define("LAN_USER_32", "Администратор сайта");
 define("LAN_USER_33", "нет информации");
-define("LAN_USER_34", "назад");
+define("LAN_USER_34", " "); // удалено слово 'назад', так как дублирует такое же в lan date
 define("LAN_USER_35", "[скрыто по запросу]");
 define("LAN_USER_36", "Нажмите здесь, чтобы посмотреть комментарии пользователя");
 define("LAN_USER_37", "Нажмите здесь, чтобы посмотреть публикации на форуме");
