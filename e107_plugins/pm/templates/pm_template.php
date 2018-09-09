@@ -174,8 +174,8 @@ $PM_TEMPLATE['outbox']['start'] = "
 <tr>
 	<th class='fcaption' style='width:1%'>&nbsp;</th>
 	<th class='fcaption' style='width:1%'>&nbsp;</th>
-	<th class='fcaption' style='width:38%'>".LAN_PM_5."</th>
-	<th class='fcaption' style='width:22%'>".LAN_PM_2."</th>
+	<th class='fcaption' style='width:38%'>".LAN_PM_2."</th>
+	<th class='fcaption' style='width:22%'>".LAN_PM_5."</th>
 	<th class='fcaption' style='width:30%'>".LAN_PM_33."</th>
 	<th class='fcaption' style='width:8%'>&nbsp;</th>
 </tr>
@@ -188,8 +188,8 @@ $PM_TEMPLATE['outbox']['item'] = "
 <tr class='{PM_STATUS_CLASS}'>
 	<td class='forumheader3'>{PM_SELECT}</td>
 	<td class='forumheader3'>{PM_ATTACHMENT_ICON}</td>
-	<td class='forumheader3'>{PM_SUBJECT=link,outbox}</td>
-		<td class='forumheader3'>{PM_TO=link}</td>
+	<td class='forumheader3'>{PM_TO=link}</td>
+		<td class='forumheader3'>{PM_SUBJECT=link,outbox}</td>
 	<td class='forumheader3'>{PM_DATE}</td>
 	<td class='forumheader3' style='text-align: center'>{PM_DELETE=outbox}</td>
 </tr>
@@ -305,3 +305,4 @@ $PM_TEMPLATE['notify'] =
 </table>
 ";
 
+?>
