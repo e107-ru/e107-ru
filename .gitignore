@@ -1,7 +1,7 @@
 # Ignore PhpStorm IDE files
 .idea
 .project
-.htaccess
+#.htaccess
 e107_config.php
 e107_config_*.php
 #e107_media/*
