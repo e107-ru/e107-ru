@@ -1,3 +1,16 @@
 <?php
+/*
++ ----------------------------------------------------------------------------+
+|     e107 website system - 
+|
 
-// define("EXAMPLE","Generated Empty Language File");
++----------------------------------------------------------------------------+
+*/
+
+define("LAN_LZ_THEMEPREF_00", "Фон изображения для видео [1920x1080px]");
+define("LAN_LZ_THEMEPREF_01", "Фон изображения для мобильных устройств");
+define("LAN_LZ_THEMEPREF_02", "Первая картинка для видео [1920x1080px]");
+define("LAN_LZ_THEMEPREF_03", "URL-адрес для заголовка видео в формате mp4"); 
+define("LAN_LZ_THEMEPREF_04", "Расположение Регистрации/Входа"); 
+define("LAN_LZ_THEMEPREF_05", "сверху");
+define("LAN_LZ_THEMEPREF_06", "снизу");
