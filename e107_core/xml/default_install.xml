@@ -395,7 +395,7 @@ City, State, Country
 )]]></core>
 		<core name="url_sef_translate">dashl</core> 
 		<core name="useGeshi">0</core>
-		<core name="use_coppa">1</core>
+		<core name="use_coppa">0</core>
 		<core name="user_new_period">3</core>
 		<core name="user_reg">1</core>
 		<core name="user_reg_secureveri">1</core>
@@ -941,6 +941,7 @@ City, State, Country
 				<field name="link_name">Article 3</field>
 				<field name="link_url">page.php?id=3</field>
 				<field name="link_description"></field>
+
 				<field name="link_button"></field>
 				<field name="link_category">1</field>
 				<field name="link_order">2</field>
