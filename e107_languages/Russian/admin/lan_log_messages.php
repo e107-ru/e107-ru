@@ -11,7 +11,7 @@
 */
 define("LAN_AUDIT_LOG_001", "Вход забаненного юзера");
 define("LAN_AUDIT_LOG_002", "Включена защита от флуда");
-define("LAN_AUDIT_LOG_003", "Доступ забаненного IP");
+define("LAN_AUDIT_LOG_003", "Доступ от забаненного IP");
 define("LAN_AUDIT_LOG_004", "");
 define("LAN_AUDIT_LOG_005", "");
 define("LAN_AUDIT_LOG_006", "Пользователь изменил пароль");
