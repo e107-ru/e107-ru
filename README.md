@@ -1,6 +1,6 @@
 [![N|Solid](https://e107-ru.com/thumb.php?src=e_MEDIA_IMAGE%2F2018-04%2Flogo2.png&w=0&h=150)](https://e107-ru.com)
 
-# Система управления сайтом e107 CMS - ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `(v. 2.1.9)`
+# Система управления сайтом e107 CMS ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `(v. 2.1.9)`
 
 - Русская локализация
 - Стабильный релиз
