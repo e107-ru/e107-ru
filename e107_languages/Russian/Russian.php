@@ -122,7 +122,7 @@ define("LAN_USER", "Пользователь");
 define("LAN_EMAIL", "Адрес эл. почты");
 define("LAN_WROTE", "написал");
 define("LAN_RE_ORDER", "Изменить порядок");
-define("LAN_RELATED", "Похожие");
+define("LAN_RELATED", "Похожие темы");
 define("LAN_CLOSE", "Закрыть");
 define("LAN_EXPAND", "Развернуть");
 define("LAN_LIST", "Список");
