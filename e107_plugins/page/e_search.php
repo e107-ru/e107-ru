@@ -170,8 +170,6 @@ class page_search extends e_search // include plugin-folder in the name.
 		*/
 	
 	}
-	
 
 }
 
-?>
