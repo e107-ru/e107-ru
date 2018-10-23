@@ -4,7 +4,7 @@
 |        e107 website content management system Russian Language File
 |        Released under the terms and conditions of the
 |        GNU General Public License (http://gnu.org).
-|        Last Modified: 2018/01/02 01:12:38
+|        Last Modified: 2018/10/23 23:19:30
 |
 |        $Author: net1313 $https://e107-ru.com
 +---------------------------------------------------------------+
@@ -179,7 +179,7 @@ define("ADLAN_LAT_1", "Что изменилось");
 define("ADLAN_LAT_2", "Сообщенные новости");
 
 define("ADLAN_LAT_5", "Сообщенные ссылки");
-define("ADLAN_LAT_6", "Посты на форуме");
+define("ADLAN_LAT_6", "Темы форума");
 define("ADLAN_LAT_7", "В загрузках");
 define("ADLAN_LAT_8", "Сообщения администратора");
 define("ADLAN_LAT_9", "Неразмещенные комментарии");
