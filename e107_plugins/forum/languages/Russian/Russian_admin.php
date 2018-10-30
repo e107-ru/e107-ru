@@ -70,7 +70,7 @@ define("FORLAN_93", "ответ(ы) удалён");
 define("FORLAN_112", "Разрешить переадресацию");
 define("FORLAN_113", "Переадресация на страницы форума после ответа");
 
-define("FORLAN_116", "Уведомления о постах");
+define("FORLAN_116", "Жалобы модератору");
 
 define("FORLAN_121", "Нет уведомлениий о постах"); //No reported posts
 define("FORLAN_122", "Щелкните здесь, чтобы отправить email администратору, когда кто-либо уведомляет о постах форума"); //...when someone reports a forum post
@@ -155,7 +155,7 @@ define("FORLAN_206", "Создать тему");
 define("FORLAN_207", "Форумы и Темы");
 define("FORLAN_208", "Только форумы");
 define("FORLAN_209", "Тема");
-define("FORLAN_210", "Результат");
+define("FORLAN_210", "Сообщение");
 define("FORLAN_211", "Автор");
 define("FORLAN_212", "Вложения");
 define("FORLAN_213", "Пост");
