@@ -265,10 +265,10 @@ define("LAN_FORUM_5009", "Уверены что хотите удалить эт
 define("LAN_FORUM_5010", "Подтвердить удаление постов"); // LAN_FORUM_5010
 define("LAN_FORUM_5019", "Переместить тему"); // LAN_FORUM_5019
 define("LAN_FORUM_5021", "перемещена"); // LAN_FORUM_5021
-define("LAN_FORUM_5022", "Не меняйте названия темы"); // LAN_FORUM_5022
-define("LAN_FORUM_5024", "Добавить [x] префикс для темы/названия"); // LAN_FORUM_5024
-define("LAN_FORUM_5025", "Заменить на:"); // LAN_FORUM_5025
-define("LAN_FORUM_5026", "Переименовать опции темы:"); // LAN_FORUM_5026
+define("LAN_FORUM_5022", "Не менять названия"); // LAN_FORUM_5022
+define("LAN_FORUM_5024", "Добавить префикс [x] к названию темы"); // LAN_FORUM_5024
+define("LAN_FORUM_5025", "Изменить название"); // LAN_FORUM_5025
+define("LAN_FORUM_5026", "Переименовать:"); // LAN_FORUM_5026
 
 
 // Statistics (lan_forum_stats.php ) ----------------
@@ -320,7 +320,7 @@ define("LAN_FORUM_8013", "Опции");
 // -------- Forum Post------------
 define("LAN_FORUM_8014", "Этот пост и каждый ответ под ним будут перенесены в новую тему");
 define("LAN_FORUM_8015", "Внимание!");
-define("LAN_FORUM_8016", "(Текущий)");
+define("LAN_FORUM_8016", " (Текущая)");
 
 // -------- Forum Class------------
 define("LAN_FORUM_8017", "Возникла ошибка при отключении отслеживания");
