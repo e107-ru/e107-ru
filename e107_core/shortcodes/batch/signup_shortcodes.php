@@ -157,15 +157,18 @@ class signup_shortcodes extends e_shortcode
 		return "<form action='".e_SELF."' method='post' id='signupform' autocomplete='off'><div>".e107::getForm()->token()."</div>";
 	}
 	
-	
-	function sc_signup_signup_text()
+	/* example: {SIGNUP_SIGNUP_TEXT}
+	/* example: {SIGNUP_SIGNUP_TEXT: class=custom} */
+	function sc_signup_signup_text($parm='')
 	{		
 		$pref = e107::getPref();
 		$tp = e107::getParser();
 			
 		if(!empty($pref['signup_text']))
 		{
-			return "<div id='signup-custom-text' class='alert alert-block alert-warning'>".$tp->toHTML($pref['signup_text'], TRUE, 'parse_sc,defs')."</div>";
+			$class = (!empty($parm['class'])) ? "class='".$parm['class']."'" : " class='alert alert-block alert-warning' ";
+			
+			return "<div id='signup-custom-text'  ".$class." >".$tp->toHTML($pref['signup_text'], TRUE, 'parse_sc,defs')."</div>";
 		}
 		
 		/*
@@ -519,14 +522,15 @@ class signup_shortcodes extends e_shortcode
 		}
 	}
 	
-	
-	function sc_signup_images() // AVATARS
+	/* {SIGNUP_IMAGES}  */
+	/* {SIGNUP_IMAGES: class=img-circle} */ 
+	function sc_signup_images($parm = '') // AVATARS
 	{
 		$pref 	= e107::getPref();
 		
 		if($pref['signup_option_image'])
 		{
-			return e107::getForm()->avatarpicker('avatar');
+			return e107::getForm()->avatarpicker('avatar', '', $parm);
 		}
 	}
 	
