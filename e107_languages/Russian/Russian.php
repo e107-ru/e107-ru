@@ -114,7 +114,7 @@ define("LAN_TITLE", "Заголовок");
 define("LAN_MESSAGE", "Сообщение");
 define("LAN_USER", "Пользователь");
 define("LAN_EMAIL", "Адрес эл. почты");
-define("LAN_WROTE", "написал");
+define("LAN_WROTE", "цитата от: ");
 define("LAN_RE_ORDER", "Изменить порядок");
 define("LAN_RELATED", "Похожие темы");
 define("LAN_CLOSE", "Закрыть");
@@ -128,3 +128,6 @@ define("LAN_SUMMARY", "Краткое описание");
 define("LAN_REQUIRED_BLANK", "Заполнены не все обязательные поля");
 define("LAN_PLEASEWAIT", "Подождите пожалуйста");
 define("LAN_CHOOSE_FILE", "Выберите файл");
+define("LAN_REQUIRED", "Обязательно");
+
+?>

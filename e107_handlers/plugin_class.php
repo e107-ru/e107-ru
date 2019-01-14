@@ -101,6 +101,8 @@ class e_plugin
 
 		if(empty($this->_ids))
 		{
+		//	e107::getDebug()->log("Running e_plugin::_initIDs()");
+		//	e107::getDebug()->log(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
 			$this->_initIDs();
 		}
 
@@ -368,6 +370,22 @@ class e_plugin
 	}
 
 
+	/**
+	 * Check if the current plugin has a global lan file
+	 * @return mixed
+	 */
+	public function hasLanGlobal()
+	{
+		if(empty($this->_plugdir))
+		{
+			e107::getDebug()->log("\$this->_plugdir is empty ".__FILE__." ". __CLASS__ ."::".__METHOD__);
+			return null;
+		}
+
+		return isset($this->_data[$this->_plugdir]['lan']) ? $this->_data[$this->_plugdir]['lan'] : false;
+	}
+
+
 	function setInstalled($plug,$version)
 	{
 		$this->_installed[$plug] = $version;
@@ -490,6 +508,8 @@ class e_plugin
 		$sql = e107::getDb();
 		$cfg = e107::getConfig();
 
+		$pref = $cfg->get('plug_installed');
+
 		$save = false;
 		if ($rows = $sql->retrieve("plugin", "*", "plugin_id != '' ORDER by plugin_path ", true))
 		{
@@ -499,11 +519,15 @@ class e_plugin
 				$path = $row['plugin_path'];
 				$this->_ids[$path] = (int) $row['plugin_id'];
 
-				if(!empty($row['plugin_installflag']))
+				if(!empty($row['plugin_installflag']) )
 				{
 					$this->_installed[$path] = $row['plugin_version'];
-					$cfg->setPref('plug_installed/'.$path, $row['plugin_version']);
-					$save = true;
+
+					if(!isset($pref[$path]))
+					{
+						$cfg->setPref('plug_installed/'.$path, $row['plugin_version']);
+						$save = true;
+					}
 				}
 
 				$this->_addons[$path] = !empty($row['plugin_addons']) ? explode(',',$row['plugin_addons']) : null;// $path;
@@ -774,6 +798,9 @@ class e_plugin
 		$ret['folder'] = $plugName; // remove the need for <folder> tag in plugin.xml.
 		$ret['category'] = (isset($ret['category'])) ? $this->checkCategory($ret['category']) : "misc";
 		$ret['files'] = preg_grep('/^([^.])/', scandir(e_PLUGIN.$plugName,SCANDIR_SORT_ASCENDING));
+		$ret['lan'] = $this->_detectLanGlobal($plugName);
+
+
 		$ret['@attributes']['version'] = $this->_fixVersion($ret['@attributes']['version']);
 		$ret['@attributes']['compatibility'] = $this->_fixCompat($ret['@attributes']['compatibility']);
 
@@ -932,10 +959,24 @@ class e_plugin
 		}
 
 		$ret['files'] = preg_grep('/^([^.])/', scandir(e_PLUGIN.$plugName,SCANDIR_SORT_ASCENDING));
+		$ret['lan'] = $this->_detectLanGlobal($plugName);
 		$ret['legacy'] = true;
 
 		return $ret;
 
+	}
+
+	private function _detectLanGlobal($pluginDir)
+	{
+		$path_a = e_PLUGIN.$pluginDir."/languages/English_global.php"; // always check for English so we have a fall-back
+		$path_b = e_PLUGIN.$pluginDir."/languages/English/English_global.php";
+
+		if(file_exists($path_a) || file_exists($path_b))
+		{
+			return $pluginDir;
+		}
+
+		return false;
 	}
 
 
@@ -1010,7 +1051,8 @@ class e_plugin
 		// reset
 		$core->set('bbcode_list', array())
 			 ->set('shortcode_legacy_list', array())
-			 ->set('shortcode_list', array());
+			 ->set('shortcode_list', array())
+			 ->set('lan_global_list', array());
 
 		$paths = $this->getDetected();
 
@@ -1035,6 +1077,11 @@ class e_plugin
 
 			if ($is_installed)
 			{
+				if($hasLAN = $this->hasLanGlobal())
+				{
+					$core->setPref('lan_global_list/'.$hasLAN, $hasLAN);
+				}
+
 				foreach ($tmp as $val)
 				{
 					if (strpos($val, 'e_') === 0)
@@ -3299,7 +3346,6 @@ class e107plugin
 
 	/**
 	 * Process XML Tag <LanguageFiles> // Tag is DEPRECATED - using _install _log and _global
-	 * @deprecated
 	 * @param string $function install|uninstall|upgrade|refresh- should $when have been used?
 	 * @param object $tag (not used?)
 	 * @param string $when = install|upgrade|refresh|uninstall
