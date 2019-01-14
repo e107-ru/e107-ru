@@ -17,7 +17,7 @@ define("LANDT_05", "час");
 define("LANDT_06", "минута");
 define("LANDT_07", "секунда");
 define("LANDT_01s", "лет");
-define("LANDT_02s", "месяцев");
+define("LANDT_02s", "мес.");
 define("LANDT_03s", "недели");
 define("LANDT_04s", "дней");
 define("LANDT_05s", "час.");
