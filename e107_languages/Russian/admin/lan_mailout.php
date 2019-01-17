@@ -4,9 +4,9 @@
 |        e107 website content management system Russian Language File
 |        Released under the terms and conditions of the
 |        GNU General Public License (http://gnu.org).
-|        Last Modified: 2016/08/14 18:15:58
+|        Last Modified: 2019/01/17 02:10:50
 |
-|        $Author: net1313 $
+|        $Author: net1313 $ https://e107-ru.com
 +---------------------------------------------------------------+
 */
 define("CORE_DATE_ORDER", "Число/Месяц/Год");
@@ -250,7 +250,7 @@ define("LAN_MAILOUT_260", "Пользователь");
 define("LAN_MAILOUT_261", "SMTP порт");
 define("LAN_MAILOUT_262", "Предпросмотр шаблона");
 define("LAN_MAILOUT_263", "Всего получателей");
-define("LAN_MAILOUT_264", "Вставить медиафайлы");
+define("LAN_MAILOUT_264", "Вставка медиафайлов");
 define("LAN_MAILOUT_265", "Незаконченные");
 define("LAN_MAILOUT_266", "Макс активных");
 define("LAN_MAILOUT_267", "Создание открытого и закрытого ключей");
