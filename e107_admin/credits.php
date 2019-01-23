@@ -38,6 +38,13 @@ require_once(e_ADMIN."auth.php");
                 <div class="well credits-content">
                 	<img class="logo" src="'.e_IMAGE_ABS.'admin_images/credits_logo.png" alt="e107 Logo" />
                 	<div class="wrapper-text">
+					 <h4 class="text-info">Русскоязычное сообщество</h4>
+					 <h4 class="text-info">Сайт: <a target="_blank" href="https://e107-ru.com" title="e107 CMS по-русски">e107-ru.com</a></h4>
+	                    <p>
+	                    Перевод файлов ядра и многих плагинов <br />
+						Улучшения в Social Plugin, Awstats, Forum ...<img class="logo" src="'.e_IMAGE_ABS.'admin_images/true_32.png" alt="e107 ru" /> <br />
+						</div>
+	                   </p>
 	                    <h4 class="text-info">Developers</h4>
 	                    <p>
 	                        Senior Developers: Cameron Hanly, Miroslav Yovchev, Steven Davies <br />
@@ -49,8 +56,7 @@ require_once(e_ADMIN."auth.php");
 	                        Twitter Bootstrap, MagpieRSS, PCLZip, PCLTar, TinyMCE,<br />
 	                        Nuvolo Icons, PHPMailer, TCPDF, PHP UTF8
 	                    </p>
-                   
-                    	<div class="copyright">Copyright <a target="_blank" href="http://e107.org/community" title="e107 Team">e107 Inc.</a> 2008-2017</div>
+                    	<div class="copyright">Copyright <a target="_blank" href="http://e107.org/community" title="e107 Team">e107 Inc.</a> 2008-'.date('Y').'</div>
                		 </div>
 			    </div>
             </div>
