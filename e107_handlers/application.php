@@ -524,7 +524,7 @@ class eFront
 			if(!empty($status[0]) && ($status[0] === '{'))
 			{
 				$status = e107::getParser()->replaceConstants($status);
-			} 
+			}
 			self::$_legacy = $status;
 		}
 		return self::$_legacy;
@@ -1027,6 +1027,9 @@ class eRouter
 	 * @var string
 	 */
 	public $notFoundUrl = 'system/error/404?type=routeError';
+
+
+
 	
 	public function __construct()
 	{
@@ -1085,7 +1088,8 @@ class eRouter
 	{
 		return $this->_urlFormat;
 	}
-	
+
+
 	/**
 	 * Load config and url rules, if not available - build it on the fly
 	 * @return eRouter
@@ -1792,9 +1796,14 @@ class eRouter
 			$rawPathInfo = rawurldecode($request->getPathInfo());
 			//$this->_urlFormat = self::FORMAT_PATH;
 		}
-		
+
+
+
+		// Ignore social trackers when determining route.
+		$get = eHelper::removeTrackers($_GET);
+
 		// Route to front page - index/index/index route
-		if(!$rawPathInfo && (!$this->getMainModule() || empty($_GET)))
+		if(!$rawPathInfo && (!$this->getMainModule() || empty($get)))
 		{
 			// front page settings will be detected and front page will be rendered
 			$request->setRoute('index/index/index');
@@ -4926,4 +4935,28 @@ class eHelper
 
 		return array(1 => $multi, 2 => $params, 3 => $parmstr);
 	}
+
+
+	/**
+	 * Remove Social Media Trackers from a $_GET array based on key matches.
+	 * @param array $get
+	 * @return array
+	 */
+	public static function removeTrackers($get = array())
+	{
+		$trackers = array('fbclid','utm_source','utm_medium','utm_content','utm_campaign');
+
+		foreach($trackers as $val)
+		{
+			if(isset($get[$val]))
+			{
+				unset($get[$val]);
+			}
+		}
+
+		return $get;
+
+	}
+
+
 }

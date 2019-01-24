@@ -24,7 +24,7 @@ $sql = e107::getDb();
 $sql->db_Mark_Time('(Header Top)');
 
 // Load library dependencies.
-e107::getTheme('current', true)->loadLibrary();
+e107::getTheme('current')->loadLibrary();
 
 //e107::js('core',	'bootstrap/js/bootstrap-tooltip.js','jquery');
 // e107::css('core',	'bootstrap/css/tooltip.css','jquery');
@@ -694,7 +694,7 @@ echo "</head>\n";
 
 if(!deftrue('BODYTAG')) //TODO Discuss a better way?
 {
-	$body_onload .= " id='layout-".e107::getForm()->name2id(THEME_LAYOUT)."'";
+	$body_onload .= " id='layout-".e107::getForm()->name2id(THEME_LAYOUT)."' ";
 	echo "<body".$body_onload.">\n";
 }
 else

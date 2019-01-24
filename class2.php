@@ -261,73 +261,6 @@ $e107 = e107::getInstance()->initCore($e107_paths, e_ROOT, $sql_info, varset($E1
 
 e107::getSingleton('eIPHandler');			// This auto-handles bans etc
 
-
-### NEW Register Autoload - do it asap
-if(!function_exists('spl_autoload_register'))
-{
-	// PHP >= 5.1.2 required
-	die('Fatal exception - spl_autoload_* required.');
-}
-
-
-// allow disable of autoloading - may be removed as e107::autoload_register() is flexible enough
-if(!defset('E107_DISABLE_AUTOLOAD', false))
-{
-	/**
-	 * Generic autoloader. (didn't work while in e107_class.php) 
-	 * @example if your plugin calls 'use Xxxxx\Yyyyy\Zzzzz;' it will attempt to load: ./vendor/Xxxxx/Yyyyy/Zzzzz.php
-	 */
-	function autoloadPsr0($className)
-	{
-		$className = str_replace("_", "\\", $className);
-		$className = ltrim($className, '\\');
-		$fileName = '';
-		$namespace = '';
-		
-		if ($lastNsPos = strripos($className, '\\'))
-		{
-			$namespace = substr($className, 0, $lastNsPos);
-			$className = substr($className, $lastNsPos + 1);
-			$fileName = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-		}
-		
-		$fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-		
-		$fullPath = 'vendor'. DIRECTORY_SEPARATOR . $fileName;
-		
-		if(file_exists($fullPath))
-		{
-			e107_require_once($fullPath);	
-		}
-		else
-		{
-			return false;	
-		} 
-		
-	}
-
-	e107::autoload_register(array('e107', 'autoload'));
-//	e107::autoload_register('autoloadPsr0');  // Generic 'use xxxx\yyyy\zzzz;' fix/solution for plugin developers. 
-	
-}
-
-	function genericAutoload($className)
-	    {
-	        $className = str_replace("_", "\\", $className);
-	        $className = ltrim($className, '\\');
-	        $fileName = '';
-	        $namespace = '';
-	        if ($lastNsPos = strripos($className, '\\'))
-	        {
-	            $namespace = substr($className, 0, $lastNsPos);
-	            $className = substr($className, $lastNsPos + 1);
-	            $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-	        }
-	        $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-	
-	        e107_require_once($fileName);
-	    }
-
 /**
  * NEW - system security levels
  * Could be overridden by e107_config.php OR $CLASS2_INCLUDE script (if not set earlier)
@@ -1388,7 +1321,7 @@ $sql->db_Mark_Time('Find/Load Theme-Layout'); // needs to run after checkvalidth
 
 if(!defined("THEME_LAYOUT"))
 {
-    $def = "";   // no custom pages found yet.
+ /*   $def = "";   // no custom pages found yet.
     $cusPagePref = (varset($user_pref['sitetheme_custompages'])) ? $user_pref['sitetheme_custompages'] : varset($pref['sitetheme_custompages']);
 
 	if(is_array($cusPagePref) && count($cusPagePref)>0)  // check if we match a page in layout custompages.
@@ -1397,6 +1330,8 @@ if(!defined("THEME_LAYOUT"))
 		$c_url = str_replace(array('&amp;'), array('&'), e_REQUEST_URL);//.(e_QUERY ? '?'.e_QUERY : '');// mod_rewrite support
 		// FIX - check against urldecoded strings
 		$c_url = rtrim(rawurldecode($c_url), '?');
+
+
 		
     	foreach($cusPagePref as $lyout=>$cusPageArray)
 		{
@@ -1429,7 +1364,7 @@ if(!defined("THEME_LAYOUT"))
 				}
 			}
 		}
-	}
+	}*/
 
 	/* Done via e_IFRAME and USER_AREA force combination, check moved to menu.php
 	if(strpos(e_SELF.'?'.e_QUERY, $ADMIN_DIRECTORY. 'menus.php?configure')!==FALSE)
@@ -1451,7 +1386,7 @@ if(!defined("THEME_LAYOUT"))
 	{
 		define("THEME_STYLE", 'style.css');
 	}	
-
+/*
     if($def) // custom-page layout.
 	{
     	define("THEME_LAYOUT",$def);
@@ -1459,11 +1394,12 @@ if(!defined("THEME_LAYOUT"))
 	else // default layout.
 	{
     	$deflayout = (!isset($user_pref['sitetheme_deflayout'])) ? varset($pref['sitetheme_deflayout']) : $user_pref['sitetheme_deflayout'];
-		/**
-		 * @ignore
-		 */
+
 		define("THEME_LAYOUT",$deflayout);  // default layout.
-	}
+	}*/
+
+	$deflayout = e107::getTheme()->getThemeLayout();
+	define("THEME_LAYOUT",$deflayout);
 
     unset($def,$lyout,$cusPagePref,$menus_equery,$deflayout);
 
