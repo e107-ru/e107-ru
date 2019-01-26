@@ -648,4 +648,3 @@ class e_array {
 		return false;
 	}
 }
-
