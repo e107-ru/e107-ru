@@ -23,7 +23,7 @@ define("CHATBOX_L7", "Разбанить");
 define("CHATBOX_L8", "Инфа");
 define("CHATBOX_L9", "Забанить");
 // define("CHATBOX_L10", "Delete");
-define("CHATBOX_L11", "Пока нет постов");
+define("CHATBOX_L11", "Пока чат пуст");
 define("CHATBOX_L12", "Смотреть все");
 define("CHATBOX_L13", "модерировать");
 define("CHATBOX_L14", "Смайлики");
