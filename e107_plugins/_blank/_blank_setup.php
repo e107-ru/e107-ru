@@ -37,14 +37,14 @@ if(!class_exists("_blank_setup"))
 				'blank_name'			=>'My Name',
 				'blank_folder'			=>'Folder Value',
 				'blank_version'			=>'1',
-				'blank_author'			=>'bill',
+				'blank_author'			=>'1',
 				'blank_authorURL'		=>'http://e107.org',
 				'blank_date'			=>'1352871240',
 				'blank_compatibility'	=>'2',
 				'blank_url'				=>'http://e107.org'
 			);
 
-			if($sql->insert('blank',$e107_blank))
+			if($sql->insert('_blank', $e107_blank))
 			{
 				$mes->add("Custom - Install Message.", E_MESSAGE_SUCCESS);
 			}
