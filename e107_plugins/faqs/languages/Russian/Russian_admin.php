@@ -10,7 +10,7 @@ define("LANA_FAQ_QUESTION", "Вопрос");
 define("LANA_FAQ_QUESTIONS", "Вопросы");
 define("LANA_FAQ_ANSWER", "Ответ");
 define("LANA_FAQ_UNANSWERED", "Без ответов");
-define("LANA_FAQ_COMMENT", "Класс комментариев"); 
+define("LANA_FAQ_COMMENT", "Разрешить комментарии"); 
 //define("LANA_FAQ_UNAME", "User name"); //LAN_USER
 define("LANA_FAQ_ULOGINNAME", "Логин"); //FIXME Use generic
 define("LANA_FAQ_TAGS", "Метки");
@@ -18,10 +18,10 @@ define("LANA_FAQ_TAGS_HELP", "Список меток, разделенными 
 define("LANA_FAQ_METAD", "Мета описание");
 define("LANA_FAQ_METAK", "Ключевые слова");
 
-define("LANA_FAQ_PREF_1", "Кто может постить вопросы:");
+define("LANA_FAQ_PREF_1", "Разрешить пост вопросов:");
 define("LANA_FAQ_PREF_2", "Ограничить только для");
 define("LANA_FAQ_PREF_3", "Классический шаблон");
-define("LANA_FAQ_PREF_4", "Квоты на количество вопросов для одного юзера");
+define("LANA_FAQ_PREF_4", "Лимит на кол-во вопросов за один раз");
 define("LANA_FAQ_PREF_5", "Лимит на кол-во символов в поле вопроса");
 define("LANA_FAQ_PREF_6", "Разрешить вопросы на");
 define("LANA_FAQ_PREF_7", "Текст подтверждения после отправки вопроса");
