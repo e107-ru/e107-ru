@@ -437,7 +437,8 @@ class e_db_mysql
 	*/
 	function db_Write_log($log_type = '', $log_remark = '', $log_query = '')
 	{
-		global $tp, $e107;
+
+		$tp = e107::getParser();
 		list($time_usec, $time_sec) = explode(" ", microtime());
 		$uid = (USER) ? USERID : '0';
 		$userstring = ( USER === true ? USERNAME : "LAN_ANONYMOUS");
@@ -1764,7 +1765,7 @@ class e_db_mysql
 	* @desc Enter description here...
 	* @access private
 	*/
-	function db_SetErrorReporting($mode)
+	public function db_SetErrorReporting($mode)
 	{
 		$this->mySQLerror = $mode;
 	}
