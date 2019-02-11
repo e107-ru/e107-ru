@@ -33,7 +33,7 @@ class e_db_pdo implements e_db
 	protected   $mySQLlastErrText = '';		// Text of last error - now protected, use getLastErrorText()
 	protected   $mySQLlastQuery = '';
 
-	public      $mySQLcurTable;
+	protected      $mySQLcurTable;
 	public      $mySQLlanguage;
 	public      $mySQLinfo;
 	public      $tabset;
@@ -51,6 +51,16 @@ class e_db_pdo implements e_db
 	private     $pdo            = true; // using PDO or not.
 	private     $pdoBind        = false;
 
+	/** @var e107_traffic */
+	private     $traffic;
+
+	/** @var e107_db_debug */
+	private     $dbg;
+
+	private     $debugMode      = false;
+
+	private     $queryCount     = 0;
+
 
 	/**
 	* Constructor - gets language options from the cookie or session
@@ -59,16 +69,8 @@ class e_db_pdo implements e_db
 	public function __construct()
 	{
 
-		global $pref, $db_defaultPrefix;
-
-/*
-		if((PHP_MAJOR_VERSION > 6) || !function_exists('mysql_connect') ||  (defined('e_PDO') && e_PDO === true))
-		{
-			$this->pdo = true;
-		}
-
-		*/e107::getSingleton('e107_traffic')->BumpWho('Create db object', 1);
-
+		$this->traffic = e107::getSingleton('e107_traffic');
+		$this->traffic->BumpWho('Create db object', 1);
 		$this->mySQLPrefix = MPREFIX;				// Set the default prefix - may be overridden
 
 		if($port = e107::getMySQLConfig('port'))
@@ -76,24 +78,29 @@ class e_db_pdo implements e_db
 			$this->mySQLport = intval($port);
 		}
 
-		/*$langid = (isset($pref['cookie_name'])) ? 'e107language_'.$pref['cookie_name'] : 'e107language_temp';
-		if (isset($pref['user_tracking']) && ($pref['user_tracking'] == 'session'))
-		{
-			if (!isset($_SESSION[$langid])) { return; }
-			$this->mySQLlanguage = $_SESSION[$langid];
-		}
-		else
-		{
-			if (!isset($_COOKIE[$langid])) { return; }
-			$this->mySQLlanguage = $_COOKIE[$langid];
-		}*/
 		// Detect is already done in language handler, use it if not too early
-		if(defined('e_LANGUAGE')) $this->mySQLlanguage = e107::getLanguage()->e_language;
+		if(defined('e_LANGUAGE'))
+		{
+			 $this->mySQLlanguage = e107::getLanguage()->e_language;
+		}
+
+		if (E107_DEBUG_LEVEL > 0)
+		{
+			$this->debugMode = true;
+		}
+
+		$this->dbg = e107::getDebug();
+
 	}
 
 	function getPDO()
 	{
 		return true;
+	}
+
+	function debugMode($bool)
+	{
+		$this->debugMode = (bool) $bool;
 	}
 
 
@@ -103,83 +110,6 @@ class e_db_pdo implements e_db
 		 $row = $this->fetch();
 		 return $row['@@sql_mode'];
 	}
-
-	/**
-	 * Connects to mySQL server and selects database - generally not required if your table is in the main DB.<br />
-	 * <br />
-	 * Example using e107 database with variables defined in e107_config.php:<br />
-	 * <code>$sql = new db;
-	 * $sql->db_Connect($mySQLserver, $mySQLuser, $mySQLpassword, $mySQLdefaultdb);</code>
-	 * <br />
-	 * OR to connect an other database:<br />
-	 * <code>$sql = new db;
-	 * $sql->db_Connect('url_server_database', 'user_database', 'password_database', 'name_of_database');</code>
-	 *
-	 * @param string $mySQLserver IP Or hostname of the MySQL server
-	 * @param string $mySQLuser MySQL username
-	 * @param string $mySQLpassword MySQL Password
-	 * @param string $mySQLdefaultdb The database schema to connect to
-	 * @param string $newLink force a new link connection if TRUE. Default FALSE
-	 * @param string $mySQLPrefix Tables prefix. Default to $mySQLPrefix from e107_config.php
-	 * @return null|string error code
-	 *//*
-	public function db_Connect($mySQLserver, $mySQLuser, $mySQLpassword, $mySQLdefaultdb, $newLink = FALSE, $mySQLPrefix = MPREFIX)
-	{
-		global $db_ConnectionID, $db_defaultPrefix;
-		e107::getSingleton('e107_traffic')->BumpWho('db Connect', 1);
-
-		$this->mySQLserver      = $mySQLserver;
-		$this->mySQLuser        = $mySQLuser;
-		$this->mySQLpassword    = $mySQLpassword;
-		$this->mySQLdefaultdb   = $mySQLdefaultdb;
-		$this->mySQLPrefix      = $mySQLPrefix;
-		$this->mySQLerror       = false;
-
-
-
-		if(strpos($mySQLserver,':')!==false && substr_count($mySQLserver, ':')===1)
-		{
-			list($this->mySQLserver,$this->mySQLport) = explode(':',$mySQLserver,2);
-		}
-
-		try
-		{
-			$this->mySQLaccess = new PDO("mysql:host=".$this->mySQLserver."; port=".$this->mySQLport, $this->mySQLuser, $this->mySQLpassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-		}
-		catch(PDOException $ex)
-		{
-			$this->mySQLlastErrText = $ex->getMessage();
-			$this->mySQLlastErrNum = $ex->getCode();
-			return 'e1';
-		}
-
-		$this->mySqlServerInfo = $this->mySQLaccess->query('select version()')->fetchColumn();		// We always need this for db_Set_Charset() - so make generally available
-
-		// Set utf8 connection?
-		//@TODO: simplify when yet undiscovered side-effects will be fixed
-		$this->setCharset();
-		$this->setSQLMode();
-
-	//	if ($this->pdo!== true && !@mysql_select_db($this->mySQLdefaultdb, $this->mySQLaccess))
-		if (!$this->database($this->mySQLdefaultdb))
-		{
-			return 'e2';
-		}
-
-
-		$this->dbError('dbConnect/SelectDB');
-
-		// Save the connection resource
-		if ($db_ConnectionID == null)
-		{
-			$db_ConnectionID = $this->mySQLaccess;
-		}
-
-		return true;
-	}
-*/
-
-
 
 
 	/**
@@ -194,9 +124,9 @@ class e_db_pdo implements e_db
 	 */
 	public function connect($mySQLserver, $mySQLuser, $mySQLpassword, $newLink = false)
 	{
-		global $db_ConnectionID, $db_defaultPrefix;
+		global $db_ConnectionID;
 
-		e107::getSingleton('e107_traffic')->BumpWho('db Connect', 1);
+		$this->traffic->BumpWho('db Connect', 1);
 
 		$this->mySQLserver 		= $mySQLserver;
 		$this->mySQLuser 		= $mySQLuser;
@@ -222,7 +152,7 @@ class e_db_pdo implements e_db
 		{
 			$this->mySQLlastErrText = $ex->getMessage();
 			$this->mySQLLastErrNum = $ex->getCode();
-			e107::getDebug()->log($ex);	// Useful for Debug.
+			$this->dbg->log($this->mySQLlastErrText);	// Useful for Debug. breaks testing.
 			return false;
 		}
 
@@ -302,14 +232,14 @@ class e_db_pdo implements e_db
 	* @desc Enter description here...
 	* @access private
 	*/
-	function db_Mark_Time($sMarker)
+	function markTime($sMarker)
 	{
-		if (E107_DEBUG_LEVEL > 0)
+		if($this->debugMode !== true)
 		{
-			/** @var e107_db_debug $db_debug */
-			global $db_debug;
-			$db_debug->Mark_Time($sMarker);
+			return null;
 		}
+
+		$this->dbg->Mark_Time($sMarker);
 	}
 
 
@@ -355,7 +285,7 @@ class e_db_pdo implements e_db
 	* @param string|array $query
 	* @param string $query['PREPARE'] PDO Format query.
 	 *@param array $query['BIND'] eg. array['my_field'] = array('value'=>'whatever', 'type'=>'str');
-	* @param unknown $rli
+	* @param object $rli
 	* @return boolean|PDOStatement | resource - as mysql_query() function.
 	*			FALSE indicates an error
 	*			For SELECT, SHOW, DESCRIBE, EXPLAIN and others returning a result set, returns a resource
@@ -363,8 +293,8 @@ class e_db_pdo implements e_db
 	*/
 	public function db_Query($query, $rli = NULL, $qry_from = '', $debug = FALSE, $log_type = '', $log_remark = '')
 	{
-		global $db_time,$db_mySQLQueryCount,$queryinfo;
-		$db_mySQLQueryCount++;
+		global $db_time, $queryinfo;
+		$this->queryCount++;
 
 		$this->mySQLlastQuery = $query;
 
@@ -441,13 +371,13 @@ class e_db_pdo implements e_db
 
 		$e = microtime();
 
-		e107::getSingleton('e107_traffic')->Bump('db_Query', $b, $e);
-		$mytime = e107::getSingleton('e107_traffic')->TimeDelta($b,$e);
+		$this->traffic->Bump('db_Query', $b, $e);
+		$mytime = $this->traffic->TimeDelta($b,$e);
 		$db_time += $mytime;
 		$this->mySQLresult = $sQryRes;
 
 
-		if (!E107_DEBUG_LEVEL)
+		if ($this->debugMode !== true)
 		{
 			$this->total_results = false;
 		}
@@ -463,44 +393,45 @@ class e_db_pdo implements e_db
 			$this->total_results = intval($rc);
 		}
 
-		if (E107_DEBUG_LEVEL)
+		if ($this->debugMode === true)
 		{
-			/** @var $db_debug e107_db_debug */
-			global $db_debug;
 			$aTrace = debug_backtrace();
 			$pTable = $this->mySQLcurTable;
-			if (!strlen($pTable)) {
+
+			if(!strlen($pTable))
+			{
 				$pTable = '(complex query)';
-			} else {
+			}
+			else
+			{
 				$this->mySQLcurTable = ''; // clear before next query
 			}
-			if(is_object($db_debug))
+
+			if(is_object($this->dbg))
 			{
 				$buglink = is_null($rli) ? $this->mySQLaccess : $rli;
 
 				if(is_array($query))
 				{
-					$query = "PREPARE: ".$query['PREPARE']."<br />BIND:".print_a($query['BIND'],true); // ,true);
+					$query = "PREPARE: " . $query['PREPARE'] . "<br />BIND:" . print_a($query['BIND'], true); // ,true);
 				}
 
 				if(isset($ex) && is_object($ex))
 				{
 					$query = $ex->getMessage();
-					$query .= print_a($ex->getTrace(),true);
+					$query .= print_a($ex->getTrace(), true);
 				}
 
 
 				if($buglink instanceof PDO)
 				{
 
-					$db_debug->Mark_Query($query, 'PDO', $sQryRes, $aTrace, $mytime, $pTable);
+					$this->dbg->Mark_Query($query, 'PDO', $sQryRes, $aTrace, $mytime, $pTable);
 				}
 
 			}
-			else
-			{
-				// echo "what happened to db_debug??!!<br />";
-			}
+
+
 		}
 
 		return $sQryRes;
@@ -548,7 +479,7 @@ class e_db_pdo implements e_db
 	 * @param boolean $multi if true, fetch all (multi mode)
 	 * @param string $indexField field name to be used for indexing when in multi mode
 	 * @param boolean $debug
-	 * @return string|array
+	 * @return mixed
 	 */
 	public function retrieve($table, $fields = null, $where=null, $multi = false, $indexField = null, $debug = false)
 	{
@@ -647,6 +578,8 @@ class e_db_pdo implements e_db
 			break;
 
 		}
+
+		return null;
 	}
 
 	/**
@@ -665,7 +598,6 @@ class e_db_pdo implements e_db
 	*/
 	public function select($table, $fields = '*', $arg = '', $noWhere = false, $debug = FALSE, $log_type = '', $log_remark = '')
 	{
-		global $db_mySQLQueryCount;
 
 		$table = $this->hasLanguage($table);
 
@@ -1360,7 +1292,7 @@ class e_db_pdo implements e_db
 			/** @var PDOStatement $resource */
 			$resource = $this->mySQLresult;
 			$row = $resource->fetch($type);
-			e107::getSingleton('e107_traffic')->Bump('db_Fetch', $b);
+			$this->traffic->Bump('db_Fetch', $b);
 			if ($row)
 			{
 				$this->dbError('db_Fetch');
@@ -1453,7 +1385,7 @@ class e_db_pdo implements e_db
 	function close()
 	{
 		$this->provide_mySQLaccess();
-		e107::getSingleton('e107_traffic')->BumpWho('db Close', 1);
+		$this->traffic->BumpWho('db Close', 1);
 		$this->mySQLaccess = NULL; // correct way to do it when using shared links.
 		$this->dbError('dbClose');
 	}
@@ -1557,8 +1489,6 @@ class e_db_pdo implements e_db
 	*/
 	public function gen($query, $debug = FALSE, $log_type = '', $log_remark = '')
 	{
-		global $db_mySQLQueryCount;
-
 		$this->tabset = FALSE;
 
 		$query .= " "; // temp fix for failing regex below, when there is no space after the table name;
@@ -1860,8 +1790,7 @@ class e_db_pdo implements e_db
 	*/
 	public function queryCount()
 	{
-		global $db_mySQLQueryCount;
-		return $db_mySQLQueryCount;
+		return $this->queryCount;
 	}
 
 
@@ -2315,6 +2244,7 @@ class e_db_pdo implements e_db
 			return ($mode == 'lan') ? $lan : $nolan;
 		}
 
+		return array();
 	}
 
 

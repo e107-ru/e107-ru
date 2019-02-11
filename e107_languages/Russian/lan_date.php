@@ -32,4 +32,7 @@ define("LANDT_AGO", "назад");
 define("LANDT_IN", "");
 define("LANDT_10", "Только что");
 
+define("LANDT_XAGO", "[x] назад");
+define("LANDT_INX", " [x]");
+
 ?>
