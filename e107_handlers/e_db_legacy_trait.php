@@ -38,6 +38,11 @@
 
 		public function db_Fetch($type = null)
 		{
+			if (defined('e_LEGACY_MODE') && !is_int($type))
+			{
+				return $this->fetch('both');
+		    }
+
 			return $this->fetch($type);
 		}
 
@@ -99,7 +104,7 @@
 
 		function db_IsLang($table, $multiple=false)
 		{
-			$this->hasLanguage($table, $multiple);
+			return $this->hasLanguage($table, $multiple);
 		}
 
 
@@ -125,6 +130,13 @@
 			return $this->update($table,$vars,$debug,$log_type,$log_remark);
 		}
 
+		/**
+		 * @deprecated
+		 * @param        $table
+		 * @param string $fields
+		 * @param string $args
+		 * @return mixed
+		 */
 		public function db_CopyRow($table, $fields = '*', $args='')
 		{
 			return $this->copyRow($table,$fields,$args);
@@ -165,7 +177,7 @@
 
 		public function db_Mark_Time($sMarker)
 		{
-			$this->markTime($sMarker);
+			return $this->markTime($sMarker);
 		}
 
 	}

@@ -104,8 +104,9 @@ class e_db_mysql
 	private     $pdoBind= false;
 
 	/** @var e107_db_debug */
-	protected   $dbg = null;
+	private     $dbg;
 
+	private     $debugMode      = false;
 
 	/**
 	* Constructor - gets language options from the cookie or session
@@ -147,8 +148,10 @@ class e_db_mysql
 
 		if (E107_DEBUG_LEVEL > 0)
 		{
-			$this->dbg = e107::getDebug();
+			$this->debugMode = true;
 		}
+
+		$this->dbg = e107::getDebug();
 
 	}
 
@@ -157,6 +160,10 @@ class e_db_mysql
 		return $this->pdo;
 	}
 
+	function debugMode($bool)
+	{
+		$this->debugMode = (bool) $bool;
+	}
 
 	function getMode()
 	{
@@ -312,7 +319,7 @@ class e_db_mysql
 			{
 				$this->mySQLlastErrText = $ex->getMessage();
 				$this->mySQLLastErrNum = $ex->getCode();
-				e107::getDebug()->log($ex);	// Useful for Debug.
+				$this->dbg->log($this->mySQLlastErrText);	// Useful for Debug.
 				return false;
 			}
 			
@@ -349,6 +356,7 @@ class e_db_mysql
 	 */
 	public function getServerInfo()
 	{
+		$this->provide_mySQLaccess();
 		return $this->mySqlServerInfo;
 	}
 
@@ -417,7 +425,7 @@ class e_db_mysql
 	*/
 	function db_Mark_Time($sMarker)
 	{
-		if($this->dbg === null)
+		if($this->debugMode !== true)
 		{
 			return null;
 		}
@@ -465,7 +473,7 @@ class e_db_mysql
 	* @param string|array $query
 	* @param string $query['PREPARE'] PDO Format query.
 	 *@param array $query['BIND'] eg. array['my_field'] = array('value'=>'whatever', 'type'=>'str');
-	* @param unknown $rli
+	* @param object $rli
 	* @return boolean|PDOStatement | resource - as mysql_query() function.
 	*			FALSE indicates an error
 	*			For SELECT, SHOW, DESCRIBE, EXPLAIN and others returning a result set, returns a resource
@@ -594,7 +602,7 @@ class e_db_mysql
 
 		}
 
-		if (E107_DEBUG_LEVEL)
+		if ($this->debugMode === true)
 		{
 			/** @var $db_debug e107_db_debug */
 			global $db_debug;
@@ -1525,10 +1533,6 @@ class e_db_mysql
 	*/
 	function fetch($type = null)
 	{
-		if(defined('e_LEGACY_MODE') && !is_int($type))
-		{
-			$type='both';
-		}
 
 		if(defined('MYSQL_ASSOC'))
 		{
@@ -1547,7 +1551,6 @@ class e_db_mysql
 					default:
 					case 'assoc':
 					case 1; //: // 1
-
 						$type =  ($this->pdo) ?  PDO::FETCH_ASSOC : MYSQL_ASSOC;
 					break;
 				}
@@ -1991,7 +1994,7 @@ class e_db_mysql
 	* @param string fields to retrieve
 	* @desc returns fields as structured array
 	* @access public
-	* @return rows of the database as an array. 
+	* @return array rows of the database as an array.
 	*/
 	function rows($fields = 'ALL', $amount = FALSE, $maximum = FALSE, $ordermode=FALSE)
 	{
@@ -2262,15 +2265,16 @@ class e_db_mysql
 
 		if ($prefix == '') $prefix = $this->mySQLPrefix;
 
-		if (FALSE === ($result = $this->gen('SHOW COLUMNS FROM '.$prefix.$table)))
+		if (false ===  $this->gen('SHOW COLUMNS FROM '.$prefix.$table))
 		{
-			return FALSE;		// Error return
+			return false;		// Error return
 		}
+		
 		$ret = array();
 		
         if ($this->rowCount() > 0)
 		{
-			while ($row = $this->fetch($result))
+			while ($row = $this->fetch())
 			{
 				if ($retinfo)
 				{
@@ -2282,6 +2286,7 @@ class e_db_mysql
 				}
 			}
 		}
+
 		return $ret;
 	}
 
@@ -2516,7 +2521,7 @@ class e_db_mysql
 	 * @param $table
 	 * @return bool
 	 */
-	function isEmpty($table)
+	function isEmpty($table=null)
 	{
 		if(empty($table))
 		{
@@ -2543,16 +2548,26 @@ class e_db_mysql
 	 */
 	private function db_mySQLtableList($language='')
 	{
+
+		$database = !empty($this->mySQLdefaultdb) ? "FROM  ".$this->mySQLdefaultdb : "";
+		$prefix = $this->mySQLPrefix;
+
+		if(strpos($prefix, ".") !== false) // eg. `my_database`.$prefix
+		{
+			$tmp = explode(".",$prefix);
+			$prefix = $tmp[1];
+		}
+
 		if($language)
 		{
 			if(!isset($this->mySQLtableListLanguage[$language]))
 			{
 				$table = array();
-				if($res = $this->db_Query("SHOW TABLES LIKE '".$this->mySQLPrefix."lan_".strtolower($language)."%' "))
+				if($res = $this->db_Query("SHOW TABLES ".$database." LIKE '".$prefix."lan_".strtolower($language)."%' "))
 				{
 					while($rows = $this->fetch('num'))
 					{
-						$table[] = str_replace($this->mySQLPrefix,"",$rows[0]);
+						$table[] = str_replace($prefix,"",$rows[0]);
 					}
 				}
 				$ret = array($language=>$table);
@@ -2568,9 +2583,9 @@ class e_db_mysql
 		{
 			$table = array();
 
-			if($res = $this->db_Query("SHOW TABLES LIKE '".$this->mySQLPrefix."%' "))
+			if($res = $this->db_Query("SHOW TABLES ".$database." LIKE '".$prefix."%' "))
 			{
-				$length = strlen($this->mySQLPrefix);
+				$length = strlen($prefix);
 				while($rows = $this->fetch('num'))
 				{
 					$table[] = substr($rows[0],$length);
@@ -2669,7 +2684,7 @@ class e_db_mysql
 			return false;
 		}
 			
-		if($fields == '*')
+		if($fields === '*')
 		{
 			$fields = $this->db_FieldList($table);	
 			unset($fields[0]); // Remove primary_id. 
@@ -2680,6 +2695,12 @@ class e_db_mysql
 			$fieldList = $fields;
 		}
 			
+		if(empty($fields))
+		{
+			$this->mysqlLastErrText = "copyRow \$fields list was empty";
+			return false;
+		}
+
 		$id = $this->gen("INSERT INTO ".$this->mySQLPrefix.$table."(".$fieldList.") SELECT ".$fieldList." FROM ".$this->mySQLPrefix.$table." WHERE ".$args);
 		$lastInsertId = $this->lastInsertId();
 		return ($id && $lastInsertId) ? $lastInsertId : false;
@@ -2707,7 +2728,7 @@ class e_db_mysql
 			$row = $this->fetch('num');
 			$qry = $row[1];
 			//        $qry = str_replace($old, $new, $qry);
-			$qry = preg_replace("#CREATE\sTABLE\s`{0,1}".$old."`{0,1}\s#", "CREATE TABLE `{$new}` ", $qry, 1); // More selective search
+			$qry = preg_replace("#CREATE\sTABLE\s`{0,1}".$old."`{0,1}\s#", "CREATE TABLE {$new} ", $qry, 1); // More selective search
 		}
 		else
 		{
@@ -2875,7 +2896,7 @@ class e_db_mysql
 
 
 	/**
-	* @return text string relating to error (empty string if no error)
+	* @return string relating to error (empty string if no error)
 	* @param string $from
 	* @desc Calling method from within this class
 	* @access private
@@ -2889,12 +2910,12 @@ class e_db_mysql
 		{
 			$this->mySQLerror = true;
 
-			if($this->mySQLlastErrNum == 0)
+		    if($this->mySQLlastErrNum === 0)
 			{
 				return null;
 			}
 
-			return $this->mySQLlastErrText;
+			return $from." :: ".$this->mySQLlastErrText;
 		}
 
 
