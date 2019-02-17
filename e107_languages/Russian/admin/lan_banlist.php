@@ -4,7 +4,7 @@
 |        e107 website content management system Russian Language File
 |        Released under the terms and conditions of the
 |        GNU General Public License (http://gnu.org).
-|        Last Modified: 2017/12/17 22:19:17
+|        Last Modified: 2019/02/17 00:23:20
 |
 |        $Author: net1313 $
 +---------------------------------------------------------------+
@@ -98,7 +98,7 @@ define("BANLAN_91", "Формат даты/времени для логов ба
 define("BANLAN_92", "Смотрите страницу функции strftime на php.net");
 define("BANLAN_93", "");
 define("BANLAN_100", "Неизвестно");
-define("BANLAN_101", "В ручную");
+define("BANLAN_101", "Вручную");
 define("BANLAN_102", "Флуд");
 define("BANLAN_103", "Количество запросов");
 define("BANLAN_104", "Ошибка входа");
