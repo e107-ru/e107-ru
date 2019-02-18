@@ -7,8 +7,8 @@
  * GNU General Public License (http://www.gnu.org/licenses/gpl.txt)
  *
  * $Source: /cvs_backup/e107_0.8/e107_plugins/pm/languages/English_log.php,v $
- * $Revision 1.0 $
- * $Date 2017/12/17 $
+ * $Revision 1.1 $
+ * $Date 2019/02/18 $
  * $Author net1313 $
  */
 define("LAN_PM", "Личные сообщения");
@@ -101,7 +101,5 @@ define("LAN_PM_112", "Юзер(ы)");
 define("LAN_PM_113", "Читать ЛС");
 define("LAN_PM_114", "У вас недостаточно прав для отсылки этому пользователю");
 define("LAN_PM_115", "Пользователь не найден");
-
-define("LAN_PM_215", "<small>(введите первые символы имени)</small>"); // eric
 
 ?>
