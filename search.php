@@ -162,7 +162,7 @@ class search extends e_shortcode
 		$text = "<div class='input-group'>
 		<input class='tbox form-control m_search' type='text' id='q' name='q' size='35' value='".$value."' maxlength='50' />
 		<div class='input-group-btn'>
-		<button class='btn btn-primary' type='submit' name='s' value='1' >".$tp->toGlyph('search',false)."</button>
+		<button class='btn btn-primary' type='submit' name='s' value='1' >".$tp->toGlyph('fa-search',false)."</button>
 		<button class='btn btn-primary dropdown-toggle' tabindex='-1' data-toggle='dropdown' type='button'><span class='caret'></span></button>
 		";
 		
@@ -536,7 +536,7 @@ class search extends e_shortcode
 			$ret['chars'] 			= $this->search_prefs[$type.'_handlers'][$id]['chars'];
 			$ret['results'] 		= $this->search_prefs[$type.'_handlers'][$id]['results'];
 			$ret['pre_title'] 		= $this->search_prefs[$type.'_handlers'][$id]['pre_title'];
-			$ret['pre_title_alt'] 	= $tp -> toHtml($this->search_prefs[$type.'_handlers'][$id]['pre_title_alt']);
+			$ret['pre_title_alt'] 	= $tp -> toHTML($this->search_prefs[$type.'_handlers'][$id]['pre_title_alt']);
 		//	$ret['order'] 			= (isset($this->search_prefs[$type.'_handlers'][$id]['order']) && $this->search_prefs[$type.'_handlers'][$id]['order']) ? $this->search_prefs[$type.'_handlers'][$id]['order'] : $this->auto_order;
 			
 			$this->auto_order++;
