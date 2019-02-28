@@ -488,7 +488,7 @@ class e_parse extends e_parser
 	 * @param boolean|string $mod [optional] model = admin-ui usage. The 'no_html' and 'no_php' modifiers blanket prevent HTML and PHP posting regardless of posting permissions. (used in logging)
 	 *		The 'pReFs' value is for internal use only, when saving prefs, to prevent sanitisation of HTML.
 	 * @param mixed $parm [optional]
-	 * @return string
+	 * @return string|array
 	 * @todo complete the documentation of this essential method
 	 */
 	public function toDB($data, $nostrip =false, $no_encode = false, $mod = false, $parm = null)
@@ -498,11 +498,13 @@ class e_parse extends e_parser
 		if (is_array($data))
 		{
 			$ret = array();
+
 			foreach ($data as $key => $var)
 			{
 				//Fix - sanitize keys as well
 				$ret[$this->toDB($key, $nostrip, $no_encode, $mod, $parm)] = $this->toDB($var, $nostrip, $no_encode, $mod, $parm);
 			}
+
 			return $ret;
 		}
 
@@ -1980,14 +1982,18 @@ class e_parse extends e_parser
 										if(is_readable(e_PLUGIN.$hook."/e_tohtml.php"))
 										{
 											require_once(e_PLUGIN.$hook."/e_tohtml.php");
+
 											$hook_class = "e_tohtml_".$hook;
+
 											$this->e_hook[$hook] = new $hook_class;
 										}
 									}
 
 									if(is_object( $this->e_hook[$hook]))
 									{
-										$sub_blk = $this->e_hook[$hook]->to_html($sub_blk, $opts['context']);
+										/** @var e_tohtml_linkwords $deprecatedHook */
+										$deprecatedHook = $this->e_hook[$hook];
+										$sub_blk = $deprecatedHook->to_html($sub_blk, $opts['context']);
 									}
 								}
 							}
@@ -3736,23 +3742,29 @@ class e_parse extends e_parser
 	 * Start Fresh and Build on it over time to become eventual replacement to e_parse.
 	 * Cameron's DOM-based parser.
 	 *
-	 * @method replaceConstants($file, $string)
+	 * @method replaceConstants($text, $mode = '', $all = false)
 	 * @method toAttribute($title)
 	 * @method thumbUrl($icon)
+	 * @method thumbDimensions()
 	 */
 class e_parser
 {
     /**
      * @var DOMDocument
      */
-    public $domObj                = null;
+    public $domObj                  = null;
 	public $isHtml                  = false;
-    protected $removedList        = array();
-    protected $nodesToDelete      = array();
-    protected $nodesToConvert     = array();
-    protected $nodesToDisableSC = array();
-    protected $pathList           = array();
-    protected $allowedAttributes  = array(
+
+
+	protected $bootstrap            = null;
+	protected $fontawesome          = null;
+
+    protected $removedList          = array();
+    protected $nodesToDelete        = array();
+    protected $nodesToConvert       = array();
+    protected $nodesToDisableSC     = array();
+    protected $pathList             = array();
+    protected $allowedAttributes    = array(
                                     'default'   => array('id', 'style', 'class'),
                                     'img'       => array('id', 'src', 'style', 'class', 'alt', 'title', 'width', 'height'),
                                     'a'         => array('id', 'href', 'style', 'class', 'title', 'target'),
@@ -3809,6 +3821,16 @@ class e_parser
     {
         $this->domObj = new DOMDocument();
 
+		if(defined('FONTAWESOME'))
+		{
+			$this->fontawesome = (int) FONTAWESOME;
+		}
+
+		if(defined('BOOTSTRAP'))
+		{
+			$this->bootstrap = (int) BOOTSTRAP;
+
+		}
 
     }
 
@@ -3880,15 +3902,33 @@ class e_parser
         $this->scriptTags = $array;
     }
 
+
+	/**
+	 * @param int $version
+	 */
+	public function setFontAwesome($version)
+    {
+        $this->fontawesome = (int) $version;
+    }
+
+	/**
+	 * @param int $version
+	 */
+	public function setBootstrap($version)
+    {
+        $this->bootstrap = (int) $version;
+    }
+
+
 	/**
 	 * Add leading zeros to a number. eg. 3 might become 000003
 	 * @param $num integer 
 	 * @param $numDigits - total number of digits
-	 * @return number with leading zeros. 
+	 * @return string number with leading zeros.
 	 */
 	public function leadingZeros($num,$numDigits)
 	{
-		return sprintf("%0".$numDigits."d",$num);
+		return (string) sprintf("%0".$numDigits."d",$num);
 	}
 
 	/**
@@ -4082,7 +4122,7 @@ class e_parser
 
 		}
 		*/
-		if(strpos($text, 'fa-') === 0) // Font-Awesome
+		if(strpos($text, 'fa-') === 0) // Font-Awesome 4 & 5
 		{
 			$prefix = 'fa ';
 			$size 	= (vartrue($parm['size'])) ?  ' fa-'.$parm['size'] : '';
@@ -4090,6 +4130,25 @@ class e_parser
 			$spin   = !empty($parm['spin']) ? ' fa-spin' : '';
 			$rotate = !empty($parm['rotate']) ? ' fa-rotate-'.intval($parm['rotate']) : '';
 			$fixedW = !empty($parm['fw']) ? ' fa-fw' : "";
+
+			if($this->fontawesome === 5)
+			{
+				$fab = e107::getMedia()->getGlyphs('fab');
+				$fas = e107::getMedia()->getGlyphs('fas');;
+
+				$code = substr($id,3);
+
+				if(in_array($code,$fab))
+				{
+					$prefix = "fab ";
+				}
+				elseif(in_array($code,$fas))
+				{
+					$prefix = "fas ";
+				}
+
+			}
+
 		}
 		elseif(strpos($text, 'glyphicon-') === 0) // Bootstrap 3
 		{
@@ -4099,7 +4158,7 @@ class e_parser
 		}
 		elseif(strpos($text, 'icon-') === 0) // Bootstrap 2
 		{
-			if(deftrue('BOOTSTRAP') != 2) // bootrap 2 icon but running bootstrap3.
+			if($this->bootstrap !== 2) // bootrap 2 icon but running bootstrap3.
 			{
 				$prefix = 'glyphicon ';
 				$tag = 'span';
@@ -4714,7 +4773,7 @@ class e_parser
 
 		$ytqry = http_build_query($ytpref, null, '&amp;');
 
-		$defClass = (deftrue('BOOTSTRAP')) ? "embed-responsive embed-responsive-16by9" : "video-responsive"; // levacy backup.
+		$defClass = !empty($this->bootstrap) ? "embed-responsive embed-responsive-16by9" : "video-responsive"; // levacy backup.
 
 
 		if($type === 'youtube')
@@ -5057,6 +5116,8 @@ return;
 
 		$html = $text;
 
+		$sql = e107::getDb();
+		$tp = e107::getParser();
         
       //  $html = $this->getXss();
                    

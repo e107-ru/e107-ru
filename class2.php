@@ -362,12 +362,12 @@ if(E107_DEBUG_LEVEL && isset($db_debug) && is_object($db_debug))
 //
 // I: Sanity check on e107_config.php
 //     e107_config.php upgrade check
-// FIXME - obsolete check, rewrite it
-if (!$ADMIN_DIRECTORY && !$DOWNLOADS_DIRECTORY)
-{
-	message_handler('CRITICAL_ERROR', 8, ': generic, ', 'e107_config.php');
-	exit;
-}
+// obsolete check, rewrite it
+// if (!$ADMIN_DIRECTORY && !$DOWNLOADS_DIRECTORY)
+// {
+	// message_handler('CRITICAL_ERROR', 8, ': generic, ', 'e107_config.php');
+// 	exit;
+// }
 
 //
 // J: MYSQL INITIALIZATION
@@ -685,7 +685,7 @@ $sql->db_Mark_Time('Misc resources. Online user tracking, cache');
 $e107cache = e107::getCache(); //TODO - find & replace $e107cache, $e107->ecache
 
 //DEPRECATED, BC, call the method only when needed, $e107->override caught by __get()
-$override = e107::getSingleton('override', true); //TODO - find & replace $override, $e107->override
+$override = e107::getSingleton('override', true);
 
 //DEPRECATED, BC, call the method only when needed, $e107->user_class caught by __get()
 $e_userclass = e107::getUserClass();  //TODO - find & replace $e_userclass, $e107->user_class
@@ -851,12 +851,12 @@ if (!function_exists('checkvalidtheme'))
 			$legacy = (file_exists( e_THEME_ABS.$themeArray[$id].'/theme.xml') === false);
 
 			define('THEME_LEGACY',$legacy);
-	
+			unset($action);
 			
 			return;
 		}
 
-		$sql->db_Mark_time("Theme Check");
+		$sql->db_Mark_Time("Theme Check");
 
 		if (@fopen(e_THEME.$theme_check.'/theme.php', 'r'))
 	//	if (is_readable(e_THEME.$theme_check.'/theme.php'))
@@ -903,7 +903,7 @@ if (!function_exists('checkvalidtheme'))
 				
 			}
 		}
-		$sql->db_Mark_time("Theme Check End");
+		$sql->db_Mark_Time("Theme Check End");
 
 		$themes_dir = $e107->getFolder('themes');
 		$e107->http_theme_dir = "{$e107->server_path}{$themes_dir}{$e107->site_theme}/";
@@ -967,8 +967,10 @@ if (!class_exists('e107table', false))
 
 		/**
 		 * Set Advanced Page/Menu content (beyond just $caption and $text)
+		 *
 		 * @param string $type header|footer|text|title|image|list
 		 * @param string $val
+		 * @return bool|e107table
 		 */
 		public function setContent($type, $val)
 		{
@@ -1346,90 +1348,30 @@ $theme_pref = varset($pref['sitetheme_pref']);
 // --------------------------------------------------------------
 $sql->db_Mark_Time('Find/Load Theme-Layout'); // needs to run after checkvalidtheme() (for theme previewing).
 
+if(deftrue('e_ADMIN_AREA'))
+{
+	define("THEME_STYLE", $pref['admincss']);
+}
+elseif(varset($pref['themecss']) && file_exists(THEME.$pref['themecss']))
+{
+	define("THEME_STYLE", $pref['themecss']);
+}
+else
+{
+	define("THEME_STYLE", 'style.css');
+}
+
 if(!defined("THEME_LAYOUT"))
 {
- /*   $def = "";   // no custom pages found yet.
-    $cusPagePref = (varset($user_pref['sitetheme_custompages'])) ? $user_pref['sitetheme_custompages'] : varset($pref['sitetheme_custompages']);
+	$user_pref      = e107::getUser()->getPref();
+	$pref           = e107::getPref();
+	$cusPagePref    = (!empty($user_pref['sitetheme_custompages'])) ? $user_pref['sitetheme_custompages'] : varset($pref['sitetheme_custompages'],array());
+	$cusPageDef     = (empty($user_pref['sitetheme_deflayout'])) ? varset($pref['sitetheme_deflayout'],'') : $user_pref['sitetheme_deflayout'];
+	$deflayout      = e107::getTheme()->getThemeLayout($cusPagePref, $cusPageDef);
 
-	if(is_array($cusPagePref) && count($cusPagePref)>0)  // check if we match a page in layout custompages.
-	{
-	    //e_SELF.(e_QUERY ? '?'.e_QUERY : '');
-		$c_url = str_replace(array('&amp;'), array('&'), e_REQUEST_URL);//.(e_QUERY ? '?'.e_QUERY : '');// mod_rewrite support
-		// FIX - check against urldecoded strings
-		$c_url = rtrim(rawurldecode($c_url), '?');
-
-
-		
-    	foreach($cusPagePref as $lyout=>$cusPageArray)
-		{
-			if(!is_array($cusPageArray)) { continue; }
-			
-			// NEW - Front page template check - early
-			if(in_array('FRONTPAGE', $cusPageArray) && ($c_url == SITEURL || rtrim($c_url, '/') == SITEURL.'index.php'))
-			{
-				$def = $lyout;
-				break;
-			}
-   			foreach($cusPageArray as $kpage)
-			{
-				if(substr($kpage, -1) === '!' )
-				{
-					$kpage = rtrim($kpage, '!');
-					if(substr($c_url, - strlen($kpage)) === $kpage)
-					{
-						$def =  $lyout;
-						break 2;
-					}
-					continue;
-				}
-
-				if ($kpage && ($kpage == defset('e_PAGE') || strpos($c_url, $kpage) !== false))
-				{
-            	 //	$def = ($lyout) ? $lyout : "legacyCustom";
-					$def =  $lyout;
-					break 2;
-				}
-			}
-		}
-	}*/
-
-	/* Done via e_IFRAME and USER_AREA force combination, check moved to menu.php
-	if(strpos(e_SELF.'?'.e_QUERY, $ADMIN_DIRECTORY. 'menus.php?configure')!==FALSE)
-	{
-		$menus_equery = explode('.', e_QUERY);
-		$def = $menus_equery[1];
-	}
-	*/
-
-	if(deftrue('e_ADMIN_AREA'))
-	{
-		define("THEME_STYLE", $pref['admincss']);
-	}
-	elseif(varset($pref['themecss']) && file_exists(THEME.$pref['themecss']))
-	{
-		define("THEME_STYLE", $pref['themecss']);
-	}
-	else
-	{
-		define("THEME_STYLE", 'style.css');
-	}	
-/*
-    if($def) // custom-page layout.
-	{
-    	define("THEME_LAYOUT",$def);
-	}
-	else // default layout.
-	{
-    	$deflayout = (!isset($user_pref['sitetheme_deflayout'])) ? varset($pref['sitetheme_deflayout']) : $user_pref['sitetheme_deflayout'];
-
-		define("THEME_LAYOUT",$deflayout);  // default layout.
-	}*/
-
-	$deflayout = e107::getTheme()->getThemeLayout();
 	define("THEME_LAYOUT",$deflayout);
 
-    unset($def,$lyout,$cusPagePref,$menus_equery,$deflayout);
-
+    unset($cusPageDef,$lyout,$cusPagePref,$menus_equery,$deflayout);
 }
 
 // -----------------------------------------------------------------------
@@ -1756,6 +1698,8 @@ function get_user_data($uid, $extra = '')
 		// TODO - debug screen Deprecated Functions (e107)
 		e107::getMessage()->addDebug('Deprecated get_user_data() backtrace:<pre>'."\n".print_r(debug_backtrace(null,2), true).'</pre>');
 	}
+
+	unset($extra);
 
 	$var = array();
 	$user = e107::getSystemUser($uid, true);
@@ -2556,7 +2500,7 @@ class error_handler
 	 */
 	function trigger_error($information, $level)
 	{
-		trigger_error($information);
+		trigger_error($information, $level);
 	}
 }
 
