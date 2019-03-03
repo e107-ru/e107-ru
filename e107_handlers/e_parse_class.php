@@ -491,9 +491,12 @@ class e_parse extends e_parser
 	 * @return string|array
 	 * @todo complete the documentation of this essential method
 	 */
-	public function toDB($data, $nostrip =false, $no_encode = false, $mod = false, $parm = null)
+	public function toDB($data = null, $nostrip =false, $no_encode = false, $mod = false, $parm = null)
 	{
-		$core_pref = e107::getConfig();
+		if($data === null)
+		{
+			return null;
+		}
 
 		if (is_array($data))
 		{
@@ -502,18 +505,24 @@ class e_parse extends e_parser
 			foreach ($data as $key => $var)
 			{
 				//Fix - sanitize keys as well
-				$ret[$this->toDB($key, $nostrip, $no_encode, $mod, $parm)] = $this->toDB($var, $nostrip, $no_encode, $mod, $parm);
+				$key = filter_var($key,FILTER_SANITIZE_STRING);
+				$ret[$key] = $this->toDB($var, $nostrip, $no_encode, $mod, $parm);
 			}
 
 			return $ret;
 		}
-
-
-
+		
 		if (MAGIC_QUOTES_GPC == true && $nostrip == false)
 		{
 			$data = stripslashes($data);
 		}
+
+		if(intval($data) === $data || $data === '0') // simple integer.
+		{
+			return $data;
+		}
+
+		$core_pref = e107::getConfig();
 
 		if ($mod !== 'pReFs') //XXX We're not saving prefs.
 		{
@@ -550,7 +559,7 @@ class e_parse extends e_parser
 		{
 			$no_encode = true;
 		}
-				
+
 		if($parm !== null && is_numeric($parm) && !check_class($core_pref->get('post_html'), '', $parm))
 		{
 			$no_encode = false;
@@ -571,8 +580,8 @@ class e_parse extends e_parser
 
 			$ret = preg_replace("/&amp;#(\d*?);/", "&#\\1;", $data);
 		}
-		
-		// XXX - php_bbcode has been deprecated. 
+
+		// XXX - php_bbcode has been deprecated.
 		if ((strpos($mod, 'no_php') !== false) || !check_class($core_pref->get('php_bbcode')))
 		{
 			$ret = preg_replace("#\[(php)#i", "&#91;\\1", $ret);
