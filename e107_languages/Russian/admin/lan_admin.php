@@ -267,7 +267,7 @@ define("LAN_LINE", "Строка");
 define("LAN_SHORTCODES", "Шорткоды");
 define("LAN_DISPLAYOPT", "Изменить параметры отображения");
 
-define("LAN_DATESTAMP", "Дата");
+//define("LAN_DATESTAMP", "Дата");
 define("LAN_TIMESTAMP", "Время");
 
 define("LAN_PAGE", "Страница");
@@ -362,7 +362,7 @@ define("LAN_KEYWORDS", "Ключевые слова");
 define("LAN_TEMPLATE", "Шаблон");
 define("LAN_TEMPLATES", "Шаблоны");
 
-define("LAN_CATEGORIES", "Категории");
+//define("LAN_CATEGORIES", "Категории");
 define("LAN_DEMO_FORBIDDEN", "В демонстрационном режиме изменения страницы невозможны");
 define("LAN_COPYRIGHT", "Авторское право");
 define("LAN_MANAGEPERMS", "Управление правами доступа");
@@ -468,7 +468,7 @@ define("LAN_CHANGE_LANGUAGE", "Изменить локализацию");
 
 define("LAN_NEWER_VERSION_OF_X", "Новая версия [x] [y] доступна для скачивания.");
 
-define("LAN_SUBJECT", "Тема");
+//define("LAN_SUBJECT", "Тема");
 define("LAN_ITEM", "Элемент");
 define("LAN_LOCK", "Отключить");
 define("LAN_SYSTEM_USER", "Пользователь системы");
