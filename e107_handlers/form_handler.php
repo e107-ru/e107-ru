@@ -5559,15 +5559,25 @@ var_dump($select_options);*/
 
 				$meth = (!empty($attributes['method'])) ? $attributes['method'] : $method;
 
-				if(method_exists($this,$meth))
+				if(strpos($meth,'::')!==false)
 				{
-					$parms['field'] = $field;
-					$mode = (!empty($attributes['mode'])) ? $attributes['mode'] :'read';
-					$value = call_user_func_array(array($this, $meth), array($value, $mode, $parms));
+					list($className,$meth) = explode('::', $meth);
+					$cls = new $className();
 				}
 				else
 				{
-					$className = get_class($this);
+					$cls = $this;
+				}
+
+				if(method_exists($cls,$meth))
+				{
+					$parms['field'] = $field;
+					$mode = (!empty($attributes['mode'])) ? $attributes['mode'] :'read';
+					$value = call_user_func_array(array($cls, $meth), array($value, $mode, $parms));
+				}
+				else
+				{
+					$className = get_class($cls);
 					e107::getDebug()->log("Missing Method: ".$className."::".$meth." ".print_a($attributes,true));
 					return "<span class='label label-important label-danger'>Missing Method</span>";
 				}
@@ -6322,6 +6332,7 @@ var_dump($select_options);*/
 		}
 		else
 		{
+			/** @deprecated usage @see renderCreateFieldset() should be attributes['help'] */
 			$ret .= vartrue($parms['help']) ? '<div class="field-help">'.$tp->toHTML($parms['help'],false,'defs').'</div>' : '';	
 		}
 
@@ -6899,9 +6910,8 @@ var_dump($select_options);*/
 
 			$parms = vartrue($att['formparms'], array());
 			if(!is_array($parms)) parse_str($parms, $parms);
-			$label = vartrue($att['note']) ? '<div class="label-note">'.deftrue($att['note'], $att['note']).'</div>' : '';
-			$help = vartrue($att['help']) ? '<div class="field-help">'.deftrue($att['help'], $att['help']).'</div>' : '';
-
+			$label = !empty($att['note']) ? '<div class="label-note">'.deftrue($att['note'], $att['note']).'</div>' : '';
+			$help = !empty($att['help']) ? '<div class="field-help" data-placement="left">'.deftrue($att['help'], $att['help']).'</div>' : '';
 
 
 			$valPath = trim(vartrue($att['dataPath'], $key), '/');
@@ -7000,7 +7010,7 @@ var_dump($select_options);*/
 				}
 
 				$leftCell = "<span{$required_class}>".defset(vartrue($att['title']), vartrue($att['title']))."</span>".$required.$label;
-				$rightCell = $this->renderElement($keyName, $model->getIfPosted($valPath), $att, varset($model_required[$key], array()), $model->getId())." {$help}";
+				$rightCell = $this->renderElement($keyName, $model->getIfPosted($valPath), $att, varset($model_required[$key], array()), $model->getId())." ".$help;
 
 				if(vartrue($att['type']) == 'bbarea' || !empty($writeParms['nolabel']))
 				{
