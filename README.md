@@ -21,9 +21,12 @@ e107 Bootstrap - бесплатная CMS, с открытым исходным 
 
 Поддержка сообщества:
 - [e107-ru.com](https://e107-ru.com) — Сайт сообщества. e107 по-русски 
-- [Facebook](https://www.facebook.com/russian.e107) — Страница сообщества в Фейсбук
-- [Google +](https://plus.google.com/communities/116628062463169558127) — Адекватные обсуждения в Гугл +
-- [Twitter](https://twitter.com/e107_ru) — новости сообщества в Твитере
+- [Facebook](https://www.facebook.com/russian.e107) — Страница сообщества в Facebook
+- [Vkontakte](https://vk.com/e107ru) — Адекватные обсуждения на странице «Вконтакте»
+- [Twitter](https://twitter.com/e107_ru) — Новости сообщества в Твитере
+- [Telegram]("tg://resolve?domain=e107_cms) — Канал новостей в Телеграм @e107_cms
+- [Telegram]("tg://resolve?domain=e107ru) — Общение в группе Телеграм @e107ru
+
 
 В этой ветке находится **постоянно обновляемая**, последняя версия e107 CMS с русской локализацией ядра системы и основных плагинов.
 
