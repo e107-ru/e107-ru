@@ -403,7 +403,7 @@ class users_admin_ui extends e_admin_ui
 		$this->fields['user_signature']['writeParms']['data'] = e107::getUserClass()->uc_required_class_list("classes");
 		
 		$this->fields['user_signature'] = array('title' => LAN_USER_09,	'type' => 'textarea', 'data'=>'str',	'width' => 'auto', 'writeParms'=>array('size'=>'xxlarge'));
-		$this->fields['options'] = array('title'=> LAN_OPTIONS,	'type' => 'method',	'forced'=>TRUE, 'width' => '10%', 'thclass' => 'center last', 'class' => 'left');
+		$this->fields['options'] = array('title'=> LAN_OPTIONS."&nbsp;",	'type' => 'method',	'forced'=>TRUE, 'width' => '10%', 'thclass' => 'right last', 'class' => 'left');
 
 				
 		if(!getperms('4|U0')) // Quick Add User Access Only. 
@@ -1813,6 +1813,7 @@ class users_admin_ui extends e_admin_ui
 		$e107 = e107::getInstance();
 		$pref = e107::getPref();
 		$mes = e107::getMessage();
+		/** @var users_admin_form_ui $ui */
 		$ui = $this->getUI();
 		$tp = e107::getParser();
 
@@ -2169,6 +2170,8 @@ class users_admin_ui extends e_admin_ui
 	//  'clearemailbounce' - delete email address for any user whose emails bounced
 	//	'delchecked' - delete the emails whose comma-separated IDs are in $bounce_arr
 	//	'delall' - delete all bounced emails
+
+	/*
 	function check_bounces($bounce_act = 'first_check',$bounce_arr = '')
 	{
 		### old Trigger code for bounce check
@@ -2261,7 +2264,7 @@ class users_admin_ui extends e_admin_ui
 		$tot = $obj->getTotalMails();
 		$found = false;
 		$DEL = ($pref['mail_bounce_delete']) ? true : false;
-		$text = "<br /><div><form  method='post' action='".e_SELF.$qry."'><table>
+		$text = "<br /><div><form  method='post' action='".e_REQUEST_URI."'><table>
 		<tr><td style='width:5%'>#</td><td>e107-id</td><td>email</td><td>Subject</td><td>Bounce</td></tr>\n";
 		
 		$identifier = deftrue('MAIL_IDENTIFIER', 'X-e107-id');
@@ -2350,7 +2353,7 @@ class users_admin_ui extends e_admin_ui
 			$ed = '0';
 		$this->show_message(str_replace(array('[w]','[x]','[y]','[z]'),array($tot,$del_count,$ed,$found),USRLAN_155).$text);
 	}
-	
+	*/
 // ------- FIXME  Prune Users move to cron --------------
 // if (isset ($_POST['prune']))
 // {
@@ -2438,7 +2441,9 @@ class users_admin_form_ui extends e_admin_form_ui
 			// e107::getUserExt()->user_extended_edit
 		//	return 'hello';
 			$field = $att['field'];
-			$extData = $this->getController()->getExtended();
+			/** @var users_admin_ui $controller */
+			$controller = $this->getController();
+			$extData = -$controller->getExtended();
 			$extData[$field]['user_extended_struct_required'] = 0;
 
 			return e107::getUserExt()->user_extended_edit($extData[$field],$curval);
@@ -2576,7 +2581,7 @@ class users_admin_form_ui extends e_admin_form_ui
 		}*/
 		
 	
-	
+	/*
 	function user_status($curval,$mode)
 	{
 	
@@ -2616,7 +2621,8 @@ class users_admin_form_ui extends e_admin_form_ui
 	
 		
 	}
-	
+	*/
+
 	//TODO Reduce to simple edit/delete buttons only Other options included on edit page or available via inline or batch editing. 
 	function options($val, $mode) // old drop-down options. 
 	{
@@ -2941,7 +2947,7 @@ class users_admin_form_ui extends e_admin_form_ui
 
 			if($attributes['mode'] == 'read')
 			{
-				parse_str(str_replace('&amp;', '&', e_QUERY), $query); //FIXME - FIX THIS
+				parse_str(str_replace('&amp;', '&', e_QUERY), $query);
 				$query['action'] = 'edit';
 				$query['id'] = $id;
 				$query = http_build_query($query, null, '&amp;');
@@ -2953,7 +2959,7 @@ class users_admin_form_ui extends e_admin_form_ui
 
 				if($special == 0)
 				{
-					$text .= $this->submit_image('menu_delete['.$id.']', $id, 'delete', LAN_DELETE.' [ ID: '.$id.' ]', array('class' => 'action delete btn btn-default'.$delcls));
+					$text .= $this->submit_image('menu_delete['.$id.']', $id, 'delete', LAN_DELETE.' [ ID: '.$id.' ]', array('class' => 'action delete btn btn-default'));
 				}
 
 				return $text;
