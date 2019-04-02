@@ -2576,9 +2576,19 @@ class e_front_model extends e_model
 		$this->_db_errno = $sql->getLastErrorNumber();
 		$this->_db_errmsg = $sql->getLastErrorText();
 		$this->_db_qry = $sql->getLastQuery();
+
 		if($this->_db_errno)
 		{
-			$this->addMessageError('SQL Select Error', $session_messages); //TODO - Lan
+			$data = array(
+				'TABLE'     => $this->getModelTable(),
+				'error_no'  => $this->_db_errno,
+				'error_msg' => $this->_db_errmsg,
+				'qry'       => $this->_db_qry,
+				'url'       => e_REQUEST_URI,
+			);
+
+
+			$this->addMessageError('SQL Select Error', false, $data); //TODO - Lan
 			// already done by the parent
 			//$this->addMessageDebug('SQL Error #'.$this->_db_errno.': '.$sql->getLastErrorText());
 		}
@@ -2805,7 +2815,15 @@ class e_front_model extends e_model
 
 			if($this->_db_errno)
 			{
-				$this->addMessageError('SQL Update Error', $session_messages); //TODO - Lan
+				$data = array(
+					'TABLE'     => $table,
+					'error_no' => $this->_db_errno,
+					'error_msg' => $this->_db_errmsg,
+					'qry'       => $this->_db_qry,
+					'url'       => e_REQUEST_URI,
+				);
+
+				$this->addMessageError('SQL Update Error', $session_messages, $data); //TODO - Lan
 				$this->addMessageDebug('SQL Error #'.$this->_db_errno.': '.$sql->getLastErrorText());
 				return false;
 			}
@@ -3061,7 +3079,7 @@ class e_admin_model extends e_front_model
 			{
 				$logData = ($table != 'admin_log') ? array('TABLE'=>$table, 'ERROR'=>$this->_db_errmsg, 'QRY'=> print_r($this->_db_qry,true)) : false;
 
-				$this->addMessageError('SQL Replace Error', $session_messages); //TODO - Lan
+				$this->addMessageError('SQL Replace Error', $session_messages, $logData); //TODO - Lan
 				$this->addMessageDebug('SQL Error #'.$this->_db_errno.': '.$sql->getLastErrorText());
 			}
 		}
@@ -3370,8 +3388,17 @@ class e_tree_model extends e_front_model
 
 			if($sql->getLastErrorNumber())
 			{
-				// TODO - admin log?
-				$this->addMessageError('Application Error - DB query failed.') // TODO LAN
+
+				$data = array(
+					'TABLE'     => $this->getModelTable(),
+					'error_no' => $sql->getLastErrorNumber(),
+					'error_msg' => $sql->getLastErrorText(),
+					'qry'       => $sql->getLastQuery(),
+					'url'       => e_REQUEST_URI,
+				);
+
+
+				$this->addMessageError('Application Error - DB query failed.', false, $data) // TODO LAN
 					->addMessageDebug('SQL Error #'.$sql->getLastErrorNumber().': '.$sql->getLastErrorText())
 					->addMessageDebug($sql->getLastQuery());
 			}
@@ -3873,12 +3900,14 @@ class e_front_tree_model extends e_tree_model
 		if($sanitize)
 		{
 			$ids = array_map(array($tp, 'toDB'), $ids);
-			$field = $tp->toDb($field);
+			$field = $tp->toDB($field);
 			$value = "'".$tp->toDB($value)."'";
 		}
 		$idstr = implode(', ', $ids);
 
-		$res = $sql->db_Update($this->getModelTable(), "{$field}={$value} WHERE ".$this->getFieldIdName().' IN ('.$idstr.')', $this->getParam('db_debug', false));
+		$table = $this->getModelTable();
+
+		$res = $sql->update($table, "{$field}={$value} WHERE ".$this->getFieldIdName().' IN ('.$idstr.')', $this->getParam('db_debug', false));
 		$this->_db_errno = $sql->getLastErrorNumber();
 		$this->_db_errmsg = $sql->getLastErrorText();
 		$this->_db_qry = $sql->getLastQuery();
@@ -3887,7 +3916,16 @@ class e_front_tree_model extends e_tree_model
 		{
 			if($sql->getLastErrorNumber())
 			{
-				$this->addMessageError(LAN_UPDATED_FAILED, $session_messages);
+				$data = array(
+					'TABLE'     => $table ,
+					'error_no' => $this->_db_errno,
+					'error_msg' => $this->_db_errmsg,
+					'qry'       => $this->_db_qry,
+					'url'       => e_REQUEST_URI,
+				);
+
+
+				$this->addMessageError(LAN_UPDATED_FAILED, $session_messages, $data);
 				$this->addMessageDebug('SQL Error #'.$sql->getLastErrorNumber().': '.$sql->getLastErrorText());
 			}
 			else
@@ -3959,7 +3997,16 @@ class e_admin_tree_model extends e_front_tree_model
 		{
 			if($sql->getLastErrorNumber())
 			{
-				$this->addMessageError('SQL Delete Error: ' . $sql->getLastQuery(), $session_messages); //TODO - Lan
+				$data = array(
+					'TABLE'     => $table,
+					'error_no' => $this->_db_errno,
+					'error_msg' => $this->_db_errmsg,
+					'qry'       => $this->_db_qry,
+					'url'       => e_REQUEST_URI,
+				);
+
+
+				$this->addMessageError('SQL Delete Error: ' . $sql->getLastQuery(), $session_messages, $data); //TODO - Lan
 				$this->addMessageDebug('SQL Error #'.$sql->getLastErrorNumber().': '.$sql->getLastErrorText());
 			}
 		}
