@@ -331,6 +331,7 @@ $fVars->MODERATORS = LAN_FORUM_1009.': '.implode(', ', $modUser);
 $fVars->BROWSERS = '';
 --*/
 		$forumSCvars['forum_name']= $forumInfo['forum_name'];
+		$forumSCvars['forum_description']= $forumInfo['forum_description'];
 		$forumSCvars['forum_image']= $forumInfo['forum_image'];
 		$forumSCvars['modUser']= $modUser;
 		$forumSCvars['track_online']= varset($pref['track_online']);
@@ -1048,6 +1049,9 @@ function fpages($thread_info, $replies)
 
 	$replies        = (int) $replies;
 	$postsPerPage   = (int) $forum->prefs->get('postspage');
+
+	// Add 1 for the first post in the topic (which technically is not a reply), to make it consistent with the nextprev in the forum_viewtopic page
+	$replies = $replies + 1; 
 	
 	$pages = ceil(($replies)/$postsPerPage);
 

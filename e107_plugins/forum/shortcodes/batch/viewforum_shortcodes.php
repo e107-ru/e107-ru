@@ -155,6 +155,15 @@
 			return $this->var['forum_name'];
 		}
 
+		function sc_forumdescription()
+		{
+			//    global $f, $restricted_string;
+		    global $restricted_string;
+			//	$tp = e107::getParser();
+			$this->var['forum_description'] = e107::getParser()->toHTML($this->var['forum_description'], true, 'no_hook');
+			return $this->var['forum_description'].($restricted_string ? "<br /><span class='smalltext'><i>$restricted_string</i></span>" : "");
+	    }
+
 		function sc_moderators()
 		{
 			return is_array($this->var['modUser']) ? implode(", ",$this->var['modUser']) : $this->var['modUser'];
@@ -293,18 +302,31 @@
 		}
 
 
-		function sc_search()
+		function sc_search($parm='')
 		{
-			return "
-			<form method='get' class='form-inline input-append' action='" . e_BASE . "search.php'>
-			<p>
-			<input class='tbox' type='text' name='q' size='20' value='' maxlength='50' />
-			<button class='btn btn-default btn-secondary button' type='submit' name='s' >" . LAN_SEARCH . "</button>
-			<input type='hidden' name='r' value='0' />
-			<input type='hidden' name='ref' value='forum' />
-			</p>
-			</form>";
 
+			if(!deftrue('FONTAWESOME') || !$srchIcon = e107::getParser()->toGlyph('fa-search'))
+			{
+				$srchIcon = LAN_SEARCH;
+			}
+
+			$buttonclass = (!empty($parm['buttonclass'])) ? "class='".$parm['buttonclass']."'" : "class='btn btn-default btn-secondary button'";
+
+
+			// String candidate for USERLIST wrapper
+			return "
+			<form method='get' class='form-inline input-append' action='".e_HTTP."search.php'>
+			<div class='input-group'>
+			<input type='hidden' name='r' value='0' />
+			<input type='hidden' name='t' value='forum' />
+			<input type='hidden' name='forum' value='all' />
+			<input class='tbox form-control' type='text' name='q' size='20' value='' maxlength='50' />
+			<span class='input-group-btn'>
+			<button ".$buttonclass." type='submit' name='s' value='search' >".$srchIcon."</button>
+			</span>
+			</div>
+
+			</form>\n";
 		}
 
 
@@ -652,18 +674,11 @@
 		------*/
 
 
-		function sc_views()
+		function sc_views($parm='')
 		{
 			$val = ($this->var['thread_views']) ? $this->var['thread_views'] : '0' ;
-			return e107::getParser()->toBadge($val);
-		}
 
-
-		function sc_replies($parm='')
-		{
-			$val = ($this->var['thread_total_replies']) ? $this->var['thread_total_replies'] : '0';
-
-			if($parm === 'raw')
+			if(!empty($parm['raw']))
 			{
 				return $val;
 			}
@@ -672,15 +687,28 @@
 		}
 
 
-		function sc_viewsx()
+		function sc_replies($parm='')
 		{
-			return $this->sc_views();
+			$val = ($this->var['thread_total_replies']) ? $this->var['thread_total_replies'] : '0';
+
+			if(!empty($parm['raw']))
+			{
+				return $val;
+			}
+
+			return e107::getParser()->toBadge($val);
 		}
 
 
-		function sc_repliesx()
+		function sc_viewsx($parm='')
 		{
-			return $this->sc_replies();
+			return $this->sc_views($parm);
+		}
+
+
+		function sc_repliesx($parm='')
+		{
+			return $this->sc_replies($parm);
 		}
 
 //	function sc__wrapper_()	{	return 'forum_viewforum';}
@@ -743,7 +771,7 @@
 //----		$tVars['LASTPOSTDATE'] .= "<a href='".$url."'>".  $gen->computeLapse($thread_info['thread_lastpost'],time(), false, false, 'short')."</a>";
 
 
-				return ($caller == 'sc_lastpostuser' ? $LASTPOSTUSER : ($caller == 'sc_lastpostdate' ? "<a href='" . $url . "'>" . $this->gen->computeLapse($this->var['thread_lastpost'], time(), false, false, 'short') . "</a>" : ($caller == 'sc_lastpost' ? $LASTPOST : '')));
+				return ($caller == 'sc_lastpostuser' ? $LASTPOSTUSER : ($caller == 'sc_lastpostdate' ? "<a href='" . $url . "'>" . $this->gen->computeLapse($this->var['thread_lastpost'], time(), false, true, 'short') . "</a>" : ($caller == 'sc_lastpost' ? $LASTPOST : '')));
 
 			}
 
@@ -925,7 +953,7 @@
 		function sc_pages()
 		{
 //	$tVars['PAGES'] = fpages($thread_info, $tVars['REPLIES']);
-			$ret = fpages($this->var, $this->sc_replies('raw'));
+			$ret = fpages($this->var, $this->var['thread_total_replies']);
 
 			if(!empty($ret))
 			{
