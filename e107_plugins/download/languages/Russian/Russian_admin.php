@@ -37,7 +37,7 @@ define("DOWLAN_15",  "Автор"); //FIXME Use Generic
 define("DOWLAN_16",  "Email автора"); //FIXME Use Generic
 define("DOWLAN_17",  "Веб-сайт автора");
 define("DOWLAN_18",  "Описание"); //FIXME Use Generic
-define("DOWLAN_19",  "Основное изображение");
+define("DOWLAN_19",  "Изображение");
 define("DOWLAN_20",  "Превью");
 define("DOWLAN_21",  "Статус"); //FIXME Use Generic
 define("DOWLAN_22",  "Список загрузок");
@@ -103,7 +103,7 @@ define("DOWLAN_137", "Вы уверены, что хотите удалить э
 define("DOWLAN_138", "Список зеркал");
 define("DOWLAN_139", "Адрес");
 define("DOWLAN_140", "Загрузите локальные изображения в e107_files/downloadimages, чтобы показать их здесь, или введите полный URL-адрес, если изображение находитя на внешнем ресурсе.");
-define("DOWLAN_141", "Расположение");
+define("DOWLAN_141", "Местоположение");
 define("DOWLAN_142", "Обновить зеркало");
 define("DOWLAN_143", "Создать зеркало");
 define("DOWLAN_144", "Зеркала не созданы");
