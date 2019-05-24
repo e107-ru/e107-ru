@@ -1,76 +1,81 @@
 <?php
-/*
-+---------------------------------------------------------------+
-|        e107 website content management system Russian Language File
-|        Released under the terms and conditions of the
-|        GNU General Public License (http://gnu.org).
-|        Last Modified: 2017/12/11 00:25:07
-|
-|        $Author: admin $ net1313
-+---------------------------------------------------------------+
-*/
-define("LANHELP_1", "Черный");
-define("LANHELP_2", "Синий");
-define("LANHELP_3", "Коричневый");
-define("LANHELP_4", "Голубой");
-define("LANHELP_5", "Тёмно-синий");
-define("LANHELP_6", "Тёмно-красный");
-define("LANHELP_7", "Зелёный");
-define("LANHELP_8", "Индиго");
-define("LANHELP_9", "Оливковый");
-define("LANHELP_10", "Оранжевый");
-define("LANHELP_11", "Красный");
-define("LANHELP_12", "Фиолетовый");
-define("LANHELP_13", "Белый");
-define("LANHELP_14", "Жёлтый");
-define("LANHELP_15", "Крошечный");
-define("LANHELP_16", "Маленький");
-define("LANHELP_17", "Нормальный");
-define("LANHELP_18", "Большой");
-define("LANHELP_19", "Больше");
-define("LANHELP_20", "Огромный");
-define("LANHELP_21", "Нажмите, чтобы открыть диалог выбора цвета ...");
-define("LANHELP_22", "Нажмите, чтобы открыть диалог выбора размера ...");
-define("LANHELP_23", "Вставить ссылку: \n [link]http://mysite.com[/link] или [link=http://yoursite.com] посетите мой сайт[/link]");
-define("LANHELP_24", "Полужирный текст:\n[b]Этот текст будет полужирный[/b]", "font-weight:bold; width: 20px");
-define("LANHELP_25", "Курсив:\n[i]Этот текст будет наклонным[/i]", "font-style:italic; width: 20px");
-define("LANHELP_26", "Подчеркнутый текст:\n[u]Этот текст будет подчеркнут[/u]", "text-decoration: underline; width: 20px");
-define("LANHELP_27", "Вставка изображения:\n[img]mypicture.jpg[/img]");
-define("LANHELP_28", "Выровнять по центру:\n[center]Этот текст будет центрирован[/center]");
-define("LANHELP_29", "Выровнять по левому краю:\n[left]Этот текст будет выровнен по левому краю[/left]");
-define("LANHELP_30", "Выровнять по правому краю:\n[right]Этот текст будет выровнен по правому краю[/right]");
-define("LANHELP_31", "Цитирование: [blockquote]Этот текст будет цитатой (с отступом)[/blockquote]");
-define("LANHELP_32", "Код (форматированный текст): [code]\$foo = bar;[/code]");
-define("LANHELP_33", "HTML - удаляет переносы строк из текста: [html] &lt;table&gt;&lt;tr&gt;&lt;td&gt; и т. п.[/html]");
-define("LANHELP_34", "[newpage] или [newpage=название] Вставить метку новой страницы; разделяет содержимое на несколько страниц");
-define("LANHELP_35", "адрес гиперссылки");
-define("LANHELP_36", "Неупорядоченный: [list]строка1*строка2*строка3[/list] Упорядоченный: [list=type]строка1*строка2*строка3[/list]");
-define("LANHELP_37", "Вставка изображения из каталога e107_images/newspost_images/");
-define("LANHELP_38", "будет сгенерированна ссылка на полное изображение");
-define("LANHELP_39", "Вставить ссылку на скачивание из существующих загрузкок");
-define("LANHELP_40", "В настоящее время загрузок нет");
-define("LANHELP_41", "Размер шрифта...");
-define("LANHELP_42", "Выберите изображение...");
-define("LANHELP_43", "Выберите пункт Загрузить файл...");
-define("LANHELP_44", "Нажмите, чтобы открыть/закрыть диалоговое окно смайликов ...");
-define("LANHELP_45", "Вставка изображения из менеджера медиафайлов");
-define("LANHELP_46", "* Не найдены файлы в:");
-define("LANHELP_47", "Вставить флешку: [flash=width,height]http://www.example.com/file.swf[/flash]");
-define("LANHELP_48", "Видео YouTube: [youtube=tiny | small | medium | big | huge | ширина,высота] 6kYjxJmk0wc[/youtube]");
-define("LANHELP_49", "Абзац: [p=имя класса]Текст абзаца[/p]");
-define("LANHELP_50", "Заголовок: для H2 [h]Текст заголовка[/h] или [h=2]Текст заголовка[/h]");
-define("LANHELP_51", "Отключить новые строки в HTML для текста внутри: [nobr]текст[/nobr]");
-define("LANHELP_52", "Новая строка (HTML): [br]");
-define("LANHELP_53", "Выровнять по ширине:\n[justify]Этот текст будет выровнен по ширине[/justify]");
-define("LANHELP_54", "Блок HTML (тег div): [block]Ваше содержимое[/block]");
-define("LANHELP_55", "Формат");
-define("LANHELP_56", "Вставить таблицу");
-define("LANHELP_57", "Заголовки");
-define("LANHELP_58", "Блок");
-define("LANHELP_59", "Цитата");
-define("LANHELP_60", "Блок с кодом");
-define("LANHELP_61", "Код в строке");
-define("LANHELP_62", "Параграф");
-define("LANHELP_63", "Вставить изображение из Менеджера медиа файлов");
-define("LANHELP_64", "Вставить файл из Менеджера медиа файлов");
-define("LANHELP_65", "Размер");
+/**
+ * Copyright (C) e107 Inc (e107.org), Licensed under GNU GPL (http://www.gnu.org/licenses/gpl.txt)
+ * $Id$
+ * 
+ * BBcode language file
+ * 
+ */
+define("LANHELP_1", "Black");
+define("LANHELP_2", "Blue");
+define("LANHELP_3", "Brown");
+define("LANHELP_4", "Cyan");
+define("LANHELP_5", "Dark Blue");
+define("LANHELP_6", "Dark Red");
+define("LANHELP_7", "Green");
+define("LANHELP_8", "Indigo");
+define("LANHELP_9", "Olive");
+define("LANHELP_10", "Orange");
+define("LANHELP_11", "Red");
+define("LANHELP_12", "Violet");
+define("LANHELP_13", "White");
+define("LANHELP_14", "Yellow");
+
+define("LANHELP_15", "Tiny");
+define("LANHELP_16", "Small");
+define("LANHELP_17", "Normal");
+define("LANHELP_18", "Large");
+define("LANHELP_19", "Larger");
+define("LANHELP_20", "Massive");
+
+define("LANHELP_21", "Click to open color dialog ...");
+define("LANHELP_22", "Click to open size dialog ...");
+
+define("LANHELP_23", "Insert link:\n[link]http://mysite.com[/link] or  [link=http://yoursite.com]Visit My Site[/link]");
+define("LANHELP_24", "Bold text:\n[b]This text will be bold[/b]", "font-weight:bold; width: 20px");
+define("LANHELP_25", "Italic text:\n[i]This text will be italicised[/i]", "font-style:italic; width: 20px");
+define("LANHELP_26", "Underline text:\n[u]This text will be underlined[/u]", "text-decoration: underline; width: 20px");
+define("LANHELP_27", "Insert image:\n[img]mypicture.jpg[/img]");
+define("LANHELP_28", "Center align:\n[center]This text will be centered[/center]");
+define("LANHELP_29", "Left align:\n[left]This text will be left aligned[/left]");
+define("LANHELP_30", "Right align:\n[right]This text will be right aligned[/right]");
+define("LANHELP_31", "Blockquote text: [blockquote]This text will be blockquoted (indented)[/blockquote]");
+define("LANHELP_32", "Code - preformatted text: [code]\$foo = bah;[/code]");
+define("LANHELP_33", "HTML - removes linebreaks from text: [html]&lt;table&gt;&lt;tr&gt;&lt;td&gt; etc[/html]");
+define("LANHELP_34", "[newpage] or [newpage=title] Insert newpage tag, splits article into more than one page");
+define("LANHELP_35", "hyperlink url");
+define("LANHELP_36", "Unordered: [list]line1*line2*line3[/list] Ordered: [list=type]line1*line2*line3[/list]");
+
+define("LANHELP_37", "Insert image from e107_images/newspost_images/ directory");
+define("LANHELP_38", "link to full image will be generated");
+
+define("LANHELP_39", "Insert download link from existing downloads");
+define("LANHELP_40", "There are currently no existing downloads");
+
+define("LANHELP_41", "Font Size...");
+define("LANHELP_42", "Select Image...");
+define("LANHELP_43", "Select Download File...");
+define("LANHELP_44", "Click to open/close emoticon dialog ...");
+define("LANHELP_45", "Insert image from Media-Manager");
+define("LANHELP_46", "* No files found in: ");
+
+define("LANHELP_47", "Insert flash: [flash=width,height]http://www.example.com/file.swf[/flash]");
+define("LANHELP_48", "YouTube video: [youtube=tiny | small | medium | big | huge | width,height]6kYjxJmk0wc[/youtube]");
+define("LANHELP_49", "Paragraph: [p=class name]Paragraph text[/p]");
+define("LANHELP_50", "Heading: for H2 [h]Heading text[/h] or [h=2]Heading text[/h]");
+define("LANHELP_51", "Disable HTML new lines for enclosed text: [nobr]text[/nobr]");
+define("LANHELP_52", "New line (HTML): [br]");
+define("LANHELP_53", "Justify align:\n[justify]This text will be justified[/justify]");
+define("LANHELP_54", "HTML block (div tag): [block]Your content[/block]");
+define("LANHELP_55", "Format");
+define("LANHELP_56", "Insert a table");
+define("LANHELP_57", "Heading");
+define("LANHELP_58", "Block");
+define("LANHELP_59", "Quote");
+
+define("LANHELP_60", "Code Block");
+define("LANHELP_61", "Code Inline");
+define("LANHELP_62", "Paragraph");
+define("LANHELP_63", "Insert an Image from the Media Manager");
+define("LANHELP_64", "Insert a file from the Media-Manager");
+define("LANHELP_65", "Size");

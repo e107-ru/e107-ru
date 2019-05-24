@@ -52,9 +52,9 @@ class listclass
 		e107::includeLan($this->plugin_dir."languages/".e_LANGUAGE.".php");
 
 		//template
-		if (is_readable(THEME."templates/list_new/list_template.php"))
+		if (is_readable(THEME."list_template.php"))
 		{
-			require_once(THEME."templates/list_new/list_template.php");
+			require_once(THEME."list_template.php");
 		}
 		else
 		{

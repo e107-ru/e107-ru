@@ -550,7 +550,7 @@ class signup
 
 		if(!empty($error_message))
 		{
-			$ret['text'] = "<div class='alert alert-danger'><b>".$error_message."</b></div>";	// Just display the error message
+			$ret['text'] = "<div class='alert alert-danger'>".$error_message."</b></div>";	// Just display the error message
 			$ret['caption'] = LAN_SIGNUP_99; // Problem Detected
 			return $ret;
 		}
@@ -622,7 +622,7 @@ if (isset($_POST['register']) && intval($pref['user_reg']) === 1)
 		if ($badCodeMsg = e107::getSecureImg()->invalidCode($_POST['rand_num'], $_POST['code_verify'])) // better: allows class to return the error. 
 		{
 			//$extraErrors[] = LAN_SIGNUP_3."\\n";
-			$extraErrors[] = $badCodeMsg;
+			$extraErrors[] = $badCodeMsg."\\n";
 			$error = TRUE;
 		}
 	}

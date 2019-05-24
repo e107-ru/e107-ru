@@ -101,5 +101,3 @@ define("LAN_CONVERT_71", "Forum Posts");
 define("LAN_CONVERT_72", "Forum Track");
 define("LAN_CONVERT_73", "Userclasses");
 define("LAN_CONVERT_74", "News Categories");
-
-?>

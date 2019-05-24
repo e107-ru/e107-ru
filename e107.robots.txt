@@ -4,13 +4,13 @@ Disallow: /cron.php
 Disallow: /fpw.php
 Disallow: /membersonly.php
 Disallow: /e107_admin/
-Disallow: /e107_images/
 Disallow: /e107_core/
 Disallow: /e107_docs/
+Disallow: /e107_files/cache/
+Disallow: /e107_files/public/avatars/
 Disallow: /e107_handlers/
 Disallow: /e107_languages/
 Disallow: /e107_media/
 Disallow: /e107_system/
 Disallow: /e107_themes/
 Disallow: /e107_web/
-Disallow: /download/

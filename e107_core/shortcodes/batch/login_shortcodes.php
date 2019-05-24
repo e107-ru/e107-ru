@@ -44,7 +44,7 @@ class login_shortcodes extends e_shortcode
 	
 	/* example: {LOGIN_TABLE_USERNAME} */
 	/* example: {LOGIN_TABLE_USERNAME: class=form-control}  */
-	function sc_login_table_username($parm='') //FIXME use $frm
+	function sc_login_table_username($parm=null) //FIXME use $frm
 	{
 
 		if(empty($this->userReg))
@@ -63,7 +63,7 @@ class login_shortcodes extends e_shortcode
 		
 	/* example: {LOGIN_TABLE_PASSWORD} */
 	/* example: {LOGIN_TABLE_PASSWORD: class=form-control}  */
-	function sc_login_table_password($parm='') //FIXME use $frm
+	function sc_login_table_password($parm=null) //FIXME use $frm
 	{
 		if(empty($this->userReg))
 		{
@@ -113,14 +113,14 @@ class login_shortcodes extends e_shortcode
 		// return e107::getSecureImg()->r_image();	
 	}
 	
-	function sc_login_table_secimg_textboc($parm='')
+	function sc_login_table_secimg_textboc($parm=null)
 	{
 		if(empty($this->userReg))
 		{
 			return null;
 		}
 
-		if(!$this->secImg){ return; }
+		if(!$this->secImg){ return null; }
 		return 	e107::getSecureImg()->renderInput();
 		// return "<input class='tbox' type='text' name='code_verify' size='15' maxlength='20' />";	
 	}
@@ -136,7 +136,7 @@ class login_shortcodes extends e_shortcode
 	}
 	
 
-	function sc_login_table_autologin_lan($parm='')
+	function sc_login_table_autologin_lan($parm=null)
 	{
 		if(empty($this->userReg))
 		{
@@ -146,21 +146,26 @@ class login_shortcodes extends e_shortcode
 		return LAN_LOGIN_8;	
 	}
 
-	function sc_login_table_rememberme($parm=null)
+	function sc_login_table_rememberme($parm=array())
 	{
 		if(empty($this->userReg))
 		{
 			return null;
 		}
 
-		return e107::getForm()->checkbox('autologin',1,false,LAN_LOGIN_8);
+		if(!isset($parm['label']))
+		{
+			$parm['label'] = LAN_LOGIN_8;
+		}
+
+		return e107::getForm()->checkbox('autologin',1,false,$parm);
 
 	}
 	
 	/* example: {LOGIN_TABLE_SUBMIT=large} */
 	/* example: {LOGIN_TABLE_SUBMIT: class=btn submit_but}  */
 	
-	function sc_login_table_submit($parm="") //FIXME use $frm
+	function sc_login_table_submit($parm=null) //FIXME use $frm
 	{
  
 		if(empty($this->userReg))
@@ -193,7 +198,7 @@ class login_shortcodes extends e_shortcode
 
 	/* example {LOGIN_TABLE_SIGNUP_LINK} */
 	/* example {LOGIN_TABLE_SIGNUP_LINK: class=hover-black dg-btn-2 radius-3px btn-white hover-accent size-lg} */
-	function sc_login_table_signup_link($parm='')
+	function sc_login_table_signup_link($parm=null)
 	{
 	
 		if($this->userReg === 1)
@@ -209,13 +214,14 @@ class login_shortcodes extends e_shortcode
 
 	/* example {LOGIN_TABLE_FPW_LINK} */
 	/* example {LOGIN_TABLE_FPW_LINK: class=dg-btn-2 btn-white radius-3px hover-white size-xl} */
-	function sc_login_table_fpw_link($parm='')
+	function sc_login_table_fpw_link($parm=null)
 	{
 		if(empty($this->userReg))
 		{
 			return null;
 		}
-    $class = (!empty($parm['class'])) ? "class='".$parm['class']."'" : "";
+
+        $class = (!empty($parm['class'])) ? "class='".$parm['class']."'" : "";
 		return "<a href='".e_HTTP."fpw.php' ".$class.">".LAN_LOGIN_12."</a>";
 	}
 	

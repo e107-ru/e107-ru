@@ -1,3 +1,4 @@
+
 body						{ padding-top: 75px; font-size: 14px;  }
 body#admin-admin .popover   { position: fixed }
 
@@ -176,6 +177,7 @@ input.input-block-level,
 input.form-control.input-block-level,
 select.input-block-level                { width: 100% }
 table  label.checkbox                   { margin-left: 20px }
+ul.checkboxes { display: inline-block; list-style: none; margin: 0; padding: 0;}
 
 #admin-ui-nav-menu i.fa-chevron-right   { margin-left: -10px }
 
@@ -582,6 +584,7 @@ i.s-message-error	{ background-position: -925px 0; width: 32px; height: 32px; }
 i.s-message-warning	{ background-position: -777px -37px; width: 32px; height: 32px; }
 i.s-message-info	{ background-position: -1480px 0; width: 32px; height: 32px;  }
 i.s-message-debug	{ background-position: -1480px 0; width: 32px; height: 32px;  }
+i.s-message-empty   { background:none; }
 
 .s-message .well { background-color: rgba(0,0,0,0.4) }
 .s-message-body { padding-left: 42px; }

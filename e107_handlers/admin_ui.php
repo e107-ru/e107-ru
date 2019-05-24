@@ -1647,6 +1647,12 @@ class e_admin_controller
 	 * @var string default action name
 	 */
 	protected $_default_action = 'index';
+
+
+	/**
+	 * @var string default trigger action.
+	 */
+	protected $_default_trigger = 'auto';
 	
 	/**
 	 * List (numerical array) of only allowed for this controller actions
@@ -2358,6 +2364,14 @@ class e_admin_controller
 		return $this->_default_action;
 	}
 
+
+
+	public function getDefaultTrigger()
+	{
+		return $this->_default_trigger;
+
+	}
+
 	/**
 	 * Set default action
 	 * @param string $action_name
@@ -2366,6 +2380,21 @@ class e_admin_controller
 	public function setDefaultAction($action_name)
 	{
 		$this->_default_action = $action_name;
+		return $this;
+	}
+
+
+		/**
+	 * Set default trigger
+	 * @param string|array $triggers 'auto' or array of triggers
+	 * @example $triggers['submit'] = array(LAN_UPDATE, 'update', $model->getId());
+				$triggers['submit'] = array(LAN_CREATE, 'create', 0);
+				$triggers['cancel'] = array(LAN_CANCEL, 'cancel');
+	 * @return e_admin_controller
+	 */
+	public function setDefaultTrigger($triggers)
+	{
+		$this->_default_trigger = $triggers;
 		return $this;
 	}
 
@@ -2397,6 +2426,7 @@ class e_admin_controller_ui extends e_admin_controller
 	 * @var array UI field data
 	 */
 
+	protected $listQry;
 
 	protected $pid;
 
@@ -2947,7 +2977,13 @@ class e_admin_controller_ui extends e_admin_controller
 
 		if($this->getAction() === 'list' || $this->getAction() === 'grid')
 		{
-			return $this->getListModel()->get($key);
+			$obj = $this->getListModel();
+			if(is_object($obj))
+			{
+				return $obj->get($key);
+			}
+
+			return null;
 		}
 
 		return $this->getModel()->get($key);
@@ -4049,9 +4085,12 @@ class e_admin_controller_ui extends e_admin_controller
 		$tableSJoinArr = array(); // FROM for join tables
 		$filter = array();
 
+		$this->listQry = $listQry;
 
 		$searchQuery = $this->fixSearchWildcards($tp->toDB($request->getQuery('searchquery', '')));
 		$searchFilter = $this->_parseFilterRequest($request->getQuery('filter_options', ''));
+
+		$listQry = $this->listQry; // check for modification during parseFilterRequest();
 
 		if(E107_DEBUG_LEVEL == E107_DBG_SQLQUERIES)
 		{
@@ -6005,6 +6044,14 @@ class e_admin_ui extends e_admin_controller_ui
 	}
 
 	/**
+	 * User defined before pref saving logic
+	 */
+	public function afterPrefsSave()
+	{
+
+	}
+
+	/**
     * User defined error handling, return true to suppress model messages
     */
 	public function onUpdateError($new_data, $old_data, $id)
@@ -6054,7 +6101,7 @@ class e_admin_ui extends e_admin_controller_ui
 
 	/**
 	 *
-	 * @return TBD
+	 * @return string
 	 */
 	public function CreatePage()
 	{
@@ -6110,6 +6157,7 @@ class e_admin_ui extends e_admin_controller_ui
 
 		$this->getConfig()->save(true);
 
+		$this->afterPrefsSave();
 
 /*
 		$this->getConfig()
@@ -6563,10 +6611,11 @@ class e_admin_form_ui extends e_form
 						'footer' => $form_end,  //XXX Unused?
 						'after_submit_options' => $controller->getAfterSubmitOptions(), // or true for default redirect options
 						'after_submit_default' => $request->getPosted('__after_submit_action', $controller->getDefaultAction()), // or true for default redirect options
-						'triggers' => 'auto', // standard create/update-cancel triggers
+						'triggers' => $controller->getDefaultTrigger(), // standard create/update-cancel triggers
 					)
 				)
 		);
+
 		$models[] = $controller->getModel();
 
 		return $this->renderCreateForm($forms, $models, e_AJAX_REQUEST);

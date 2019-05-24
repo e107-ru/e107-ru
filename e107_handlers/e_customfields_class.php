@@ -320,7 +320,7 @@
 				<col style='width:40%' />
 			</colgroup>
 			<tbody>
-				<tr><th>".LAN_NAME."</th><th>".LAN_TITLE."</th><th>".LAN_TYPE."</th><th>".LAN_UI_PREF_LABEL."</th><th>".LAN_TOOLTIP."</th></tr>
+				<tr><th>".LAN_NAME."</th><th>".LAN_TITLE."</th><th>".LAN_TYPE."</th><th>Params</th><th>".LAN_TOOLTIP."</th></tr>
 				";
 
 			for($i = 0; $i <= $this->_field_limit; $i++)

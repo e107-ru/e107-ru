@@ -1,3 +1,4 @@
+
 /* ADMIN specific styling */
 /*
 a.media-select-image 		{ margin:5px; border:1px solid rgb(102, 102, 102); width:120px; height:100px; border-radius:4px }
@@ -39,3 +40,6 @@ a.media-select-icon-none span       { font-size:30px  }
 @media (min-height: 500px){
 	a.media-select-image-none span  { font-size:80px }
 }
+
+
+

@@ -227,9 +227,19 @@ if(isset($CLASS2_INCLUDE) && ($CLASS2_INCLUDE!=''))
 	 require_once(e_ROOT.$CLASS2_INCLUDE);
 }
 
+if(empty($HANDLERS_DIRECTORY))
+{
+	$HANDLERS_DIRECTORY = 'e107_handlers/';
+}
+
+if(empty($PLUGINS_DIRECTORY))
+{
+	$PLUGINS_DIRECTORY = 'e107_plugins/';
+}
+
 //define("MPREFIX", $mySQLprefix); moved to $e107->set_constants()
 
-if(!isset($ADMIN_DIRECTORY))
+if(empty($mySQLdefaultdb))
 {
   // e107_config.php is either empty, not valid or doesn't exist so redirect to installer..
   header('Location: install.php');
@@ -246,6 +256,9 @@ unset($tmpPlugDir);
 //
 // clever stuff that figures out where the paths are on the fly.. no more need for hard-coded e_HTTP :)
 //
+
+
+
 $tmp = e_ROOT.$HANDLERS_DIRECTORY;
 
 //Core functions - now API independent

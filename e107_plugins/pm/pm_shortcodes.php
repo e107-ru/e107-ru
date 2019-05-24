@@ -253,7 +253,7 @@ if(!class_exists('plugin_pm_pm_shortcodes'))
 				if(isset($_POST['quote']))
 				{
 					$t = time();
-					$value = "[quote{$t}={$this->var['from_name']}]\n".trim($this->var['pm_text'])."[/quote{$t}]";
+					$value = "\n\n\n\n\n\n\n[quote{$t}={$this->var['from_name']}]\n".trim($this->var['pm_text'])."[/quote{$t}]";
 				}
 			}
 
