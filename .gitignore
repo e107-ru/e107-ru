@@ -15,5 +15,7 @@ phpunit/
 # Ignore Vim swap files
 *.swp
 *.swo
+*.md
+LICENSE
 e107.htaccess
 e107InstallLog.log
