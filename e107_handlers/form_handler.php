@@ -4816,6 +4816,19 @@ var_dump($select_options);*/
 			break;
 		}
 
+		if(!empty($attributes['grid']) && empty($attributes['type']))
+		{
+			return null;
+		}
+
+		if(empty($attributes['type']))
+		{
+			e107::getDebug()->log("Field '".$field."' is missing a value for 'type'.");
+		//	e107::getDebug()->log($value);
+		//	e107::getDebug()->log($attributes);
+		}
+
+
 		switch($attributes['type'])
 		{
 			case 'number':
@@ -5521,7 +5534,7 @@ var_dump($select_options);*/
 			break;
 
 			case 'method': // Custom Function			
-				$method = $attributes['field']; // prevents table alias in method names. ie. u.my_method.
+				$method = varset($attributes['field']); // prevents table alias in method names. ie. u.my_method.
 				$_value = $value;
 
 				if(!empty($attributes['data']) && $attributes['data'] == 'array') // FIXME @SecretR - please move this to where it should be.

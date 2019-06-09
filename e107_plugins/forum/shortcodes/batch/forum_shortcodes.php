@@ -391,6 +391,16 @@ class forum_shortcodes extends e_shortcode
 
 	}
 
+	/**
+	* @example: {FORUMICON: size=2x} 
+	*/
+	function sc_forumicon($parms = null)
+	{
+		if(empty($this->var['forum_icon'])) return '';
+
+		return e107::getParser()->toIcon($this->var['forum_icon'], $parms);
+	}
+
 	function sc_forumname($parm = null)
 	{
 		if(substr($this->var['forum_name'], 0, 1) == '*')
@@ -400,10 +410,7 @@ class forum_shortcodes extends e_shortcode
 
 		$this->var['forum_name'] = e107::getParser()->toHTML($this->var['forum_name'], true, 'no_hook');
 
-		if(!empty($parm['class']))
-		{
-			$class = "class='".$parm['class']."'"; 
-		}
+		$class = !empty($parm['class']) ? "class='".$parm['class']."'" : '';
 
 		$url = e107::url('forum', 'forum', $this->var);
 		return "<a href='".$url."' ".$class.">{$this->var['forum_name']}</a>";

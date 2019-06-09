@@ -1149,6 +1149,15 @@ class news_front
 				}
 
 				$template = $tmp['item'];
+
+				if(isset($tmp['caption']) && $tmp['caption'] !== null) // to initiate tablerender() usage.
+				{
+					$this->addDebug('Internal Route', $this->route);
+					$this->route = 'news/view'; // used for tablerender id.
+					$this->templateKey = $newsViewTemplate; // used for tablerender id.
+					$this->caption = e107::getParser()->parseTemplate($tmp['caption'], true, $news);
+				}
+
 				unset($tmp);
 			}
 
@@ -1591,28 +1600,33 @@ class news_front
 				// v2.1.7 load the category template if found.
 				if(!empty($this->templateKey)) // predefined by NEWS_LAYOUT;
 				{
+					$this->addDebug("Template Mode",'NEWS_LAYOUT constant');
 					$tmpl = $layout[$this->templateKey];
 					$param['template_key'] = 'news/'.$this->templateKey;
 				}
 				elseif(!empty($newsAr[1]['category_template']) && !empty($layout[$catTemplate])) // defined by news_category field.
 				{
+					$this->addDebug("Template Mode",'news_category database field');
 					$this->templateKey = $catTemplate;
 					$tmpl = $layout[$this->templateKey];
 					$param['template_key'] = 'news/'.$this->templateKey;
 				}
 				elseif($this->action === 'list' && isset($layout['category']) && !isset($layout['category']['body'])) // make sure it's not old news_categories.sc
 				{
+					$this->addDebug("Template Mode","'category' key defined in template file");
 					$tmpl = $layout['category'];
 					$this->templateKey = 'category';
 					$param['template_key'] = 'news/category';
 				}
 				elseif(!empty($layout[$this->defaultTemplate])) // defined by default template 'news' pref.  (newspost.php?mode=main&action=settings)
 				{
+					$this->addDebug("Template Mode",'News Preferences: Default template');
 					$tmpl = $layout[$this->defaultTemplate];
 					$this->templateKey = $this->defaultTemplate;
 				}
 				else // fallback.
 				{
+					$this->addDebug("Template Mode",'Fallback');
 					$tmpl = $layout['default'] ;
 					$this->defaultTemplate = 'default';
 					$this->templateKey = 'default';

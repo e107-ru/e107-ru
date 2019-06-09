@@ -301,10 +301,12 @@ if (!function_exists('asortbyindex'))
        }
        asort ($sort_values);
        reset ($sort_values);
-       while (list ($arr_key, $arr_val) = each ($sort_values))
+
+       foreach($sort_values as $arr_key =>$arr_val)
        {
               $sorted_arr[] = $array[$arr_key];
        }
+
        return $sorted_arr;
     }
 }
@@ -484,7 +486,7 @@ class e_array {
 		{
              $ArrayData = stripslashes($ArrayData);
 		}
-		elseif(strpos($ArrayData,'array') === 0 && strpos($ArrayData,"\' => \'") !== false)
+		elseif(strpos($ArrayData,'array') === 0 && strpos($ArrayData,"\' => \'") !== false && strpos($ArrayData,"' => 'array") === false) // FIX for old corrupted link-words preference.
 		{
 			$ArrayData = stripslashes($ArrayData);
 		}

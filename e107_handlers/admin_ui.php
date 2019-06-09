@@ -4087,8 +4087,10 @@ class e_admin_controller_ui extends e_admin_controller
 
 		$this->listQry = $listQry;
 
+		$filterOptions = $request->getQuery('filter_options', '');
+
 		$searchQuery = $this->fixSearchWildcards($tp->toDB($request->getQuery('searchquery', '')));
-		$searchFilter = $this->_parseFilterRequest($request->getQuery('filter_options', ''));
+		$searchFilter = $this->_parseFilterRequest($filterOptions);
 
 		$listQry = $this->listQry; // check for modification during parseFilterRequest();
 
@@ -4264,6 +4266,12 @@ class e_admin_controller_ui extends e_admin_controller
 				}
 			}
 		}
+
+		if(strpos($filterOptions,'searchfield__') === 0) // search in specific field, so remove the above filters.
+		{
+			$filter = array(); // reset filter.
+		}
+
 
 		if(E107_DEBUG_LEVEL == E107_DBG_SQLQUERIES)
 		{
@@ -5315,7 +5323,7 @@ class e_admin_ui extends e_admin_controller_ui
 			$caption = e107::getParser()->lanVars(LAN_UI_BATCH_REVERSED_SUCCESS, $cnt, true);
 			$tree->addMessageSuccess($caption);
 			//sync models
-			$tree->load(true);
+			$tree->loadBatch(true);
 		}
 		$this->getTreeModel()->setMessages();
 	}
@@ -5448,6 +5456,24 @@ class e_admin_ui extends e_admin_controller_ui
 		$this->getTreeModel()->setMessages();
 	}
 
+
+	/**
+	 * Method to generate "Search in Field" query.
+	 * @param $selected
+	 * @return string
+	 */
+	protected function handleListSearchfieldFilter($selected)
+	{
+		$string = $this->getQuery('searchquery');
+
+		if(empty($string))
+		{
+			return null;
+		}
+
+		return $selected. " LIKE '%".e107::getParser()->toDB($string)."%' "; // array($selected, $this->getQuery('searchquery'));
+	}
+
 	/**
 	 * Batch default (field) trigger
 	 * @param array $selected
@@ -5487,7 +5513,7 @@ class e_admin_ui extends e_admin_controller_ui
 			$msg = e107::getParser()->lanVars(LAN_UI_BATCH_UPDATE_SUCCESS, array('x' => $vttl, 'y' => $cnt), true);
 			$this->getTreeModel()->addMessageSuccess($msg);
 			// force reload the collection from DB, fix some issues as 'observer' is executed before the batch handler
-			$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, false, false, $this->listQry))->load(true);
+			$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, false, false, $this->listQry))->loadBatch(true);
 		}
 		$this->getTreeModel()->setMessages();
 		return $cnt;
@@ -5608,7 +5634,7 @@ class e_admin_ui extends e_admin_controller_ui
 		{
 			return;
 		}
-		$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, false, false, $this->listQry))->load();
+		$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, false, false, $this->listQry))->loadBatch();
 
 		$this->addTitle();
 
@@ -5631,7 +5657,7 @@ class e_admin_ui extends e_admin_controller_ui
 		{
 			return;
 		}
-		$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, false, false, $this->listQry))->load();
+		$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, false, false, $this->listQry))->loadBatch();
 	}
 
 	/**
@@ -5888,7 +5914,7 @@ class e_admin_ui extends e_admin_controller_ui
 	 */
 	public function ListAjaxObserver()
 	{
-		$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, 0, false, $this->listQry))->load();
+		$this->getTreeModel()->setParam('db_query', $this->_modifyListQry(false, false, 0, false, $this->listQry))->loadBatch();
 	}
 
 
@@ -7310,9 +7336,15 @@ class e_admin_form_ui extends e_form
 		$textsingle = '';
 				
 
-		foreach($this->getController()->getFields() as $key=>$val)
+		$searchFieldOpts = array();
+
+		$fieldList = $this->getController()->getFields();
+
+
+
+		foreach($fieldList as $key=>$val)
 		{
-			if(!varset($val[$type]))
+			if(empty($val[$type])) // ie. filter = false or batch = false.
 			{
 				continue;
 			}
@@ -7331,6 +7363,8 @@ class e_admin_form_ui extends e_form
 							$option['sefgen__'.$key.'__'.$parms['sef']] = LAN_GENERATE;
 						}
 
+						$searchFieldOpts["searchfield__".$key] = $val['title'];
+
 					break;
 
 
@@ -7340,6 +7374,13 @@ class e_admin_form_ui extends e_form
 							$option[$key.'___ISEMPTY_'] = LAN_UI_FILTER_IS_EMPTY;
 						}
 
+						$searchFieldOpts["searchfield__".$key] = $val['title'];
+
+					break;
+
+					case 'textarea':
+					case 'tags':
+						$searchFieldOpts["searchfield__".$key] = $val['title'];
 					break;
 
 					case 'bool':
@@ -7526,14 +7567,14 @@ class e_admin_form_ui extends e_form
 					break;
 
 					case 'userclass':
-						$classes = e107::getUserClass()->uc_required_class_list(vartrue($parms['classlist'], 'public,nobody,guest,admin,main,classes'));
+						$classes = e107::getUserClass()->uc_required_class_list(vartrue($parms['classlist'], 'public,nobody,guest,member,admin,main,classes'));
 						foreach($classes as $k => $name)
 						{
 							$option[$key.'__'.$k] = $name;
 						}
 					break;
 					case 'userclasses':
-						$classes = e107::getUserClass()->uc_required_class_list(vartrue($parms['classlist'], 'public,nobody,guest,admin,main,classes'));
+						$classes = e107::getUserClass()->uc_required_class_list(vartrue($parms['classlist'], 'public,nobody,guest,member,admin,main,classes'));
 						$_option = array();
 						
 						if($type === 'batch')
@@ -7607,7 +7648,9 @@ class e_admin_form_ui extends e_form
 					break;
 			}
 
-			if(count($option) > 0)
+
+
+			if(!empty($option))
 			{
 				$text .= "\t".$this->optgroup_open($optdiz[$type].defset($val['title'], $val['title']), varset($disabled))."\n";
 				foreach($option as $okey=>$oval)
@@ -7617,6 +7660,22 @@ class e_admin_form_ui extends e_form
 				$text .= "\t".$this->optgroup_close()."\n";
 			}
 		}
+
+
+
+		if(!empty($searchFieldOpts))
+		{
+			$text .= "\t".$this->optgroup_open(defset("LAN_UI_FILTER_SEARCH_IN_FIELD", "Search in Field"))."\n";
+
+			foreach($searchFieldOpts as $key=>$val)
+			{
+				$text .= $this->option($val, $key, $selected == $key)."\n";
+			}
+
+			$text .= "\t".$this->optgroup_close()."\n";
+		}
+
+
 
 		return $textsingle.$text;
 

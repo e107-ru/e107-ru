@@ -312,7 +312,7 @@ class theme_admin_ui extends e_admin_ui
 			$param['limitTo']   = 0 ; // (int) $this->getPerPage();
 			$param['searchqry'] = $this->getQuery('searchquery', '');
 
-			$this->getTreeModel()->setParams($param)->load(); // load the tree model above from the class below.
+			$this->getTreeModel()->setParams($param)->loadBatch(); // load the tree model above from the class below.
 		}
 
 		public function OnlineObserver()
@@ -721,7 +721,7 @@ class theme_admin_tree_model extends e_tree_model
 	 * Load data from theme meta file.
 	 * @param bool $force
 	 */
-	function load()
+	function loadBatch($force=false)
 	{
 		$themeList  = e107::getTheme()->getList();
 		$newArray   = array();
@@ -786,7 +786,7 @@ class theme_admin_online_tree_model extends e_tree_model
 	 * Load data from theme meta file.
 	 * @param bool $force
 	 */
-	function load()
+	function loadBatch($force=false)
 	{
 		$themeList  = e107::getTheme()->getList();
 
